@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crochet Lace Blouse — Pattern Tutorial</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --warm-white: #faf8f4;
+    --linen: #e8e0d0;
+    --taupe: #b8a898;
+    --deep: #3a3228;
+    --accent: #8b7355;
+    --soft-rose: #d4c4b0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--warm-white);
+    color: var(--deep);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* Cover */
+  .cover {
+    min-height: 100vh;
+    background: var(--deep);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff08' stroke-width='1'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3Cline x1='10' y1='30' x2='50' y2='30'/%3E%3Cline x1='30' y1='10' x2='30' y2='50'/%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+
+  .cover-lace {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 80px;
+    opacity: 0.15;
+  }
+
+  .cover-lace-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 80px;
+    opacity: 0.15;
+    transform: rotate(180deg);
+  }
+
+  .cover h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 300;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover h1 em {
+    font-style: italic;
+    color: var(--soft-rose);
+  }
+
+  .cover-sub {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: var(--taupe);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-top: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--taupe);
+    margin: 30px auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-meta {
+    font-size: 0.8rem;
+    color: var(--taupe);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Layout */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* Sections */
+  .section {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--linen);
+  }
+
+  .section:last-child { border-bottom: none; }
+
+  .section-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--linen);
+    line-height: 1;
+    margin-bottom: -20px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: var(--deep);
+    margin-bottom: 8px;
+  }
+
+  .section-subtitle {
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--taupe);
+    margin-bottom: 40px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+  }
+
+  /* Materials grid */
+  .materials-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .material-card {
+    background: var(--cream);
+    padding: 24px;
+    border-left: 3px solid var(--accent);
+  }
+
+  .material-card h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+
+  .material-card p {
+    font-size: 0.88rem;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* Stitch illustrations */
+  .stitch-demo {
+    background: var(--cream);
+    padding: 40px;
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  .stitch-demo svg {
+    max-width: 100%;
+  }
+
+  .stitch-caption {
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--taupe);
+    margin-top: 16px;
+  }
+
+  /* Steps */
+  .step {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 48px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--linen);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 60px;
+    text-align: right;
+  }
+
+  .step-content h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+
+  .step-content p {
+    font-size: 0.92rem;
+    margin-bottom: 10px;
+  }
+
+  /* Pieces table */
+  .pieces-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 0.88rem;
+  }
+
+  .pieces-table th {
+    background: var(--deep);
+    color: var(--cream);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+  }
+
+  .pieces-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--linen);
+  }
+
+  .pieces-table tr:nth-child(even) td {
+    background: var(--cream);
+  }
+
+  .pieces-table .jp {
+    font-size: 0.8rem;
+    color: var(--taupe);
+  }
+
+  /* Note box */
+  .note {
+    border: 1px solid var(--soft-rose);
+    padding: 20px 24px;
+    margin: 24px 0;
+    font-size: 0.88rem;
+    background: #fdf9f5;
+  }
+
+  .note strong {
+    color: var(--accent);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* Code/pattern rows */
+  .pattern-row {
+    background: var(--deep);
+    color: var(--cream);
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.8;
+  }
+
+  .pattern-row .row-label {
+    color: var(--soft-rose);
+    font-weight: bold;
+  }
+
+  /* Assembly diagram */
+  .assembly-diagram {
+    background: var(--cream);
+    padding: 40px;
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  /* Symbol legend */
+  .symbol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .symbol-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.88rem;
+    padding: 8px;
+    background: var(--cream);
+  }
+
+  .symbol-item svg {
+    flex-shrink: 0;
+  }
+
+  /* Finishing checklist */
+  .checklist {
+    list-style: none;
+    margin: 20px 0;
+  }
+
+  .checklist li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--linen);
+    font-size: 0.92rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .checklist li::before {
+    content: '◇';
+    color: var(--taupe);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Photo placeholder with blouse sketch */
+  .blouse-sketch {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+  }
+
+  /* Print styles */
+  @media print {
+    .cover { min-height: auto; padding: 60px 40px; page-break-after: always; }
+    .section { page-break-inside: avoid; }
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 0 20px; }
+    .materials-grid { grid-template-columns: 1fr; }
+    .step { flex-direction: column; gap: 8px; }
+    .step-num { width: auto; text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <svg class="cover-lace" viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <g fill="white">
+      <path d="M0,40 Q30,10 60,40 Q90,70 120,40 Q150,10 180,40 Q210,70 240,40 Q270,10 300,40 Q330,70 360,40 Q390,10 420,40 Q450,70 480,40 Q510,10 540,40 Q570,70 600,40 Q630,10 660,40 Q690,70 720,40 Q750,10 780,40 Q810,70 840,40 Q870,10 900,40 Q930,70 960,40 Q990,10 1020,40 Q1050,70 1080,40 Q1110,10 1140,40 Q1170,70 1200,40 L1200,0 L0,0 Z"/>
+    </g>
+  </svg>
+
+  <div style="position:relative;z-index:1;">
+    <!-- Blouse silhouette illustration -->
+    <svg width="160" height="180" viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:32px;opacity:0.6;">
+      <!-- Body -->
+      <path d="M45,170 L45,90 Q35,88 30,80 L25,60 Q40,55 50,58 L55,45 Q65,30 80,28 Q95,30 105,45 L110,58 Q120,55 135,60 L130,80 Q125,88 115,90 L115,170 Z" fill="none" stroke="#d4c4b0" stroke-width="1.5"/>
+      <!-- Ruffle left -->
+      <path d="M30,80 Q20,75 15,65 Q20,60 25,65 Q18,72 25,78 Q30,82 35,78 Q28,72 35,65 Q40,60 42,68 Q38,75 38,82" fill="none" stroke="#d4c4b0" stroke-width="1"/>
+      <!-- Ruffle right -->
+      <path d="M130,80 Q140,75 145,65 Q140,60 135,65 Q142,72 135,78 Q130,82 125,78 Q132,72 125,65 Q120,60 118,68 Q122,75 122,82" fill="none" stroke="#d4c4b0" stroke-width="1"/>
+      <!-- Fan stitch texture -->
+      <g stroke="#b8a898" stroke-width="0.5" fill="none" opacity="0.7">
+        <path d="M55,100 L50,112 M55,100 L55,113 M55,100 L60,112"/>
+        <path d="M65,100 L60,112 M65,100 L65,113 M65,100 L70,112"/>
+        <path d="M75,100 L70,112 M75,100 L75,113 M75,100 L80,112"/>
+        <path d="M85,100 L80,112 M85,100 L85,113 M85,100 L90,112"/>
+        <path d="M95,100 L90,112 M95,100 L95,113 M95,100 L100,112"/>
+        <path d="M105,100 L100,112 M105,100 L105,113 M105,100 L110,112"/>
+        <path d="M60,115 L55,127 M60,115 L60,128 M60,115 L65,127"/>
+        <path d="M70,115 L65,127 M70,115 L70,128 M70,115 L75,127"/>
+        <path d="M80,115 L75,127 M80,115 L80,128 M80,115 L85,127"/>
+        <path d="M90,115 L85,127 M90,115 L90,128 M90,115 L95,127"/>
+        <path d="M100,115 L95,127 M100,115 L100,128 M100,115 L105,127"/>
+      </g>
+      <!-- Waist band -->
+      <path d="M47,143 L113,143 L113,150 L47,150 Z" fill="none" stroke="#d4c4b0" stroke-width="1"/>
+      <!-- Scallop hem -->
+      <path d="M47,170 Q52,162 57,170 Q62,162 67,170 Q72,162 77,170 Q82,162 87,170 Q92,162 97,170 Q102,162 107,170 Q112,162 115,165" fill="none" stroke="#d4c4b0" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <h1>Lace<br><em>Blouse</em></h1>
+  <div class="cover-divider"></div>
+  <p class="cover-sub">Keito Dama 182 · Complete Crochet Tutorial</p>
+  <p class="cover-meta" style="margin-top:16px;">Fan Stitch · Flutter Sleeves · Button Back</p>
+
+  <svg class="cover-lace-bottom" viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <g fill="white">
+      <path d="M0,40 Q30,10 60,40 Q90,70 120,40 Q150,10 180,40 Q210,70 240,40 Q270,10 300,40 Q330,70 360,40 Q390,10 420,40 Q450,70 480,40 Q510,10 540,40 Q570,70 600,40 Q630,10 660,40 Q690,70 720,40 Q750,10 780,40 Q810,70 840,40 Q870,10 900,40 Q930,70 960,40 Q990,10 1020,40 Q1050,70 1080,40 Q1110,10 1140,40 Q1170,70 1200,40 L1200,80 L0,80 Z"/>
+    </g>
+  </svg>
+</div>
+
+
+<!-- MATERIALS -->
+<div class="section">
+  <div class="container">
+    <div class="section-number">01</div>
+    <h2 class="section-title">Materials & Gauge</h2>
+    <p class="section-subtitle">What you'll need before you begin</p>
+
+    <p>This blouse is worked in fine cotton in multiple separate panels, then assembled. The original Japanese pattern uses a lightweight mercerized cotton at 2mm hook. A natural ecru or off-white cotton gives the best lace definition.</p>
+
+    <div class="materials-grid">
+      <div class="material-card">
+        <h4>Yarn</h4>
+        <p>Fine mercerized cotton (approx. 4-ply / fingering weight). Catania col. 00105 (Natur/ecru) works beautifully. You'll need approximately <strong>400–500g</strong> depending on size. Buy all skeins from the same dye lot.</p>
+      </div>
+      <div class="material-card">
+        <h4>Hook</h4>
+        <p>2.0 mm steel crochet hook (or 2.5mm if your tension runs tight). The pattern uses a fine hook to give crisp, open lacework. Check your gauge before starting the main body.</p>
+      </div>
+      <div class="material-card">
+        <h4>Notions</h4>
+        <p>5–6 small pearl or shell buttons (approx. 8–10mm) for back closure. Stitch markers. Tapestry needle for seaming. Blocking mat and rust-proof pins.</p>
+      </div>
+      <div class="material-card">
+        <h4>Gauge</h4>
+        <p>Work a 10 cm × 10 cm swatch in fan stitch. Each fan unit = approx. <strong>1.5–2 cm wide</strong>. Adjust hook size until your gauge matches. Gauge is critical — even 1mm difference per fan will alter the fit significantly across 30+ repeats.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Skill Level</strong>
+      This is an intermediate-to-advanced project. The fan stitch itself is straightforward, but multi-piece construction and shaping require careful attention. Comfortable with dc, sc, and basic shaping? You're ready.
+    </div>
+  </div>
+</div>
+
+
+<!-- STITCH GUIDE -->
+<div class="section">
+  <div class="container">
+    <div class="section-number">02</div>
+    <h2 class="section-title">Stitch Guide</h2>
+    <p class="section-subtitle">Three patterns used throughout the blouse</p>
+
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;margin-bottom:12px;">Pattern A — Fan / Shell Stitch (Main Body)</h3>
+    <p>This is the dominant stitch used for all body panels. Each fan consists of 5 double crochets fanning into a single stitch, creating the distinctive downward triangle texture visible throughout the garment.</p>
+
+    <!-- Fan stitch SVG illustration -->
+    <div class="stitch-demo">
+      <svg width="600" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background rows -->
+        <rect width="600" height="200" fill="#f5f0e8"/>
+
+        <!-- Row labels -->
+        <text x="20" y="175" font-size="11" fill="#b8a898" font-family="Jost">Row 1</text>
+        <text x="20" y="135" font-size="11" fill="#b8a898" font-family="Jost">Row 2</text>
+        <text x="20" y="90" font-size="11" fill="#b8a898" font-family="Jost">Row 3</text>
+        <text x="20" y="48" font-size="11" fill="#b8a898" font-family="Jost">Row 4</text>
+
+        <!-- Foundation chain dots -->
+        <g fill="#3a3228">
+          <circle cx="70" cy="170" r="3"/>
+          <circle cx="90" cy="170" r="3"/>
+          <circle cx="110" cy="170" r="3"/>
+          <circle cx="130" cy="170" r="3"/>
+          <circle cx="150" cy="170" r="3"/>
+          <circle cx="170" cy="170" r="3"/>
+          <circle cx="190" cy="170" r="3"/>
+          <circle cx="210" cy="170" r="3"/>
+          <circle cx="230" cy="170" r="3"/>
+          <circle cx="250" cy="170" r="3"/>
+          <circle cx="270" cy="170" r="3"/>
+          <circle cx="290" cy="170" r="3"/>
+          <circle cx="310" cy="170" r="3"/>
+          <circle cx="330" cy="170" r="3"/>
+          <circle cx="350" cy="170" r="3"/>
+          <circle cx="370" cy="170" r="3"/>
+          <circle cx="390" cy="170" r="3"/>
+          <circle cx="410" cy="170" r="3"/>
+          <circle cx="430" cy="170" r="3"/>
+          <circle cx="450" cy="170" r="3"/>
+          <circle cx="470" cy="170" r="3"/>
+          <circle cx="490" cy="170" r="3"/>
+          <circle cx="510" cy="170" r="3"/>
+          <circle cx="530" cy="170" r="3"/>
+        </g>
+
+        <!-- Row 1: Fans -->
+        <!-- Fan 1 at x=110 -->
+        <g stroke="#3a3228" stroke-width="1.8" fill="none">
+          <line x1="110" y1="168" x2="90" y2="135"/>
+          <line x1="110" y1="168" x2="100" y2="133"/>
+          <line x1="110" y1="168" x2="110" y2="132"/>
+          <line x1="110" y1="168" x2="120" y2="133"/>
+          <line x1="110" y1="168" x2="130" y2="135"/>
+          <!-- cross bars (dc) -->
+          <line x1="92" y1="148" x2="95" y2="148"/>
+          <line x1="101" y1="146" x2="104" y2="146"/>
+          <line x1="109" y1="145" x2="112" y2="145"/>
+          <line x1="118" y1="146" x2="121" y2="146"/>
+          <line x1="127" y1="148" x2="130" y2="148"/>
+          <!-- top arc -->
+          <path d="M90,135 Q110,128 130,135" stroke-width="1.2"/>
+        </g>
+        <!-- sc between fans -->
+        <circle cx="150" cy="155" r="4" fill="none" stroke="#3a3228" stroke-width="1.5"/>
+
+        <!-- Fan 2 at x=190 -->
+        <g stroke="#3a3228" stroke-width="1.8" fill="none">
+          <line x1="190" y1="168" x2="170" y2="135"/>
+          <line x1="190" y1="168" x2="180" y2="133"/>
+          <line x1="190" y1="168" x2="190" y2="132"/>
+          <line x1="190" y1="168" x2="200" y2="133"/>
+          <line x1="190" y1="168" x2="210" y2="135"/>
+          <line x1="172" y1="148" x2="175" y2="148"/>
+          <line x1="181" y1="146" x2="184" y2="146"/>
+          <line x1="189" y1="145" x2="192" y2="145"/>
+          <line x1="198" y1="146" x2="201" y2="146"/>
+          <line x1="207" y1="148" x2="210" y2="148"/>
+          <path d="M170,135 Q190,128 210,135" stroke-width="1.2"/>
+        </g>
+        <circle cx="230" cy="155" r="4" fill="none" stroke="#3a3228" stroke-width="1.5"/>
+
+        <!-- Fan 3 at x=270 -->
+        <g stroke="#3a3228" stroke-width="1.8" fill="none">
+          <line x1="270" y1="168" x2="250" y2="135"/>
+          <line x1="270" y1="168" x2="260" y2="133"/>
+          <line x1="270" y1="168" x2="270" y2="132"/>
+          <line x1="270" y1="168" x2="280" y2="133"/>
+          <line x1="270" y1="168" x2="290" y2="135"/>
+          <line x1="252" y1="148" x2="255" y2="148"/>
+          <line x1="261" y1="146" x2="264" y2="146"/>
+          <line x1="269" y1="145" x2="272" y2="145"/>
+          <line x1="278" y1="146" x2="281" y2="146"/>
+          <line x1="287" y1="148" x2="290" y2="148"/>
+          <path d="M250,135 Q270,128 290,135" stroke-width="1.2"/>
+        </g>
+        <circle cx="310" cy="155" r="4" fill="none" stroke="#3a3228" stroke-width="1.5"/>
+
+        <!-- Fan 4 at x=350 -->
+        <g stroke="#3a3228" stroke-width="1.8" fill="none">
+          <line x1="350" y1="168" x2="330" y2="135"/>
+          <line x1="350" y1="168" x2="340" y2="133"/>
+          <line x1="350" y1="168" x2="350" y2="132"/>
+          <line x1="350" y1="168" x2="360" y2="133"/>
+          <line x1="350" y1="168" x2="370" y2="135"/>
+          <line x1="332" y1="148" x2="335" y2="148"/>
+          <line x1="341" y1="146" x2="344" y2="146"/>
+          <line x1="349" y1="145" x2="352" y2="145"/>
+          <line x1="358" y1="146" x2="361" y2="146"/>
+          <line x1="367" y1="148" x2="370" y2="148"/>
+          <path d="M330,135 Q350,128 370,135" stroke-width="1.2"/>
+        </g>
+        <circle cx="390" cy="155" r="4" fill="none" stroke="#3a3228" stroke-width="1.5"/>
+
+        <!-- Fan 5 at x=430 -->
+        <g stroke="#3a3228" stroke-width="1.8" fill="none">
+          <line x1="430" y1="168" x2="410" y2="135"/>
+          <line x1="430" y1="168" x2="420" y2="133"/>
+          <line x1="430" y1="168" x2="430" y2="132"/>
+          <line x1="430" y1="168" x2="440" y2="133"/>
+          <line x1="430" y1="168" x2="450" y2="135"/>
+          <line x1="412" y1="148" x2="415" y2="148"/>
+          <line x1="421" y1="146" x2="424" y2="146"/>
+          <line x1="429" y1="145" x2="432" y2="145"/>
+          <line x1="438" y1="146" x2="441" y2="146"/>
+          <line x1="447" y1="148" x2="450" y2="148"/>
+          <path d="M410,135 Q430,128 450,135" stroke-width="1.2"/>
+        </g>
+        <circle cx="470" cy="155" r="4" fill="none" stroke="#3a3228" stroke-width="1.5"/>
+
+        <!-- Row 2: offset fans (between previous fans) -->
+        <g stroke="#8b7355" stroke-width="1.8" fill="none" opacity="0.85">
+          <!-- Fan at x=150, offset -->
+          <line x1="150" y1="153" x2="130" y2="98"/>
+          <line x1="150" y1="153" x2="140" y2="96"/>
+          <line x1="150" y1="153" x2="150" y2="95"/>
+          <line x1="150" y1="153" x2="160" y2="96"/>
+          <line x1="150" y1="153" x2="170" y2="98"/>
+          <line x1="132" y1="122" x2="135" y2="122"/>
+          <line x1="141" y1="120" x2="144" y2="120"/>
+          <line x1="149" y1="119" x2="152" y2="119"/>
+          <line x1="158" y1="120" x2="161" y2="120"/>
+          <line x1="167" y1="122" x2="170" y2="122"/>
+          <path d="M130,98 Q150,91 170,98" stroke-width="1.2"/>
+          <!-- sc -->
+          <circle cx="190" cy="115" r="4" fill="none" stroke="#8b7355" stroke-width="1.5"/>
+
+          <!-- Fan at x=230, offset -->
+          <line x1="230" y1="153" x2="210" y2="98"/>
+          <line x1="230" y1="153" x2="220" y2="96"/>
+          <line x1="230" y1="153" x2="230" y2="95"/>
+          <line x1="230" y1="153" x2="240" y2="96"/>
+          <line x1="230" y1="153" x2="250" y2="98"/>
+          <line x1="212" y1="122" x2="215" y2="122"/>
+          <line x1="221" y1="120" x2="224" y2="120"/>
+          <line x1="229" y1="119" x2="232" y2="119"/>
+          <line x1="238" y1="120" x2="241" y2="120"/>
+          <line x1="247" y1="122" x2="250" y2="122"/>
+          <path d="M210,98 Q230,91 250,98" stroke-width="1.2"/>
+          <circle cx="270" cy="115" r="4" fill="none" stroke="#8b7355" stroke-width="1.5"/>
+
+          <!-- Fan at x=310, offset -->
+          <line x1="310" y1="153" x2="290" y2="98"/>
+          <line x1="310" y1="153" x2="300" y2="96"/>
+          <line x1="310" y1="153" x2="310" y2="95"/>
+          <line x1="310" y1="153" x2="320" y2="96"/>
+          <line x1="310" y1="153" x2="330" y2="98"/>
+          <line x1="292" y1="122" x2="295" y2="122"/>
+          <line x1="301" y1="120" x2="304" y2="120"/>
+          <line x1="309" y1="119" x2="312" y2="119"/>
+          <line x1="318" y1="120" x2="321" y2="120"/>
+          <line x1="327" y1="122" x2="330" y2="122"/>
+          <path d="M290,98 Q310,91 330,98" stroke-width="1.2"/>
+          <circle cx="350" cy="115" r="4" fill="none" stroke="#8b7355" stroke-width="1.5"/>
+
+          <!-- Fan at x=390, offset -->
+          <line x1="390" y1="153" x2="370" y2="98"/>
+          <line x1="390" y1="153" x2="380" y2="96"/>
+          <line x1="390" y1="153" x2="390" y2="95"/>
+          <line x1="390" y1="153" x2="400" y2="96"/>
+          <line x1="390" y1="153" x2="410" y2="98"/>
+          <line x1="372" y1="122" x2="375" y2="122"/>
+          <line x1="381" y1="120" x2="384" y2="120"/>
+          <line x1="389" y1="119" x2="392" y2="119"/>
+          <line x1="398" y1="120" x2="401" y2="120"/>
+          <line x1="407" y1="122" x2="410" y2="122"/>
+          <path d="M370,98 Q390,91 410,98" stroke-width="1.2"/>
+          <circle cx="430" cy="115" r="4" fill="none" stroke="#8b7355" stroke-width="1.5"/>
+        </g>
+
+        <!-- Row 3 fans (back to alignment) -->
+        <g stroke="#3a3228" stroke-width="1.8" fill="none" opacity="0.6">
+          <line x1="190" y1="113" x2="170" y2="60"/>
+          <line x1="190" y1="113" x2="180" y2="58"/>
+          <line x1="190" y1="113" x2="190" y2="57"/>
+          <line x1="190" y1="113" x2="200" y2="58"/>
+          <line x1="190" y1="113" x2="210" y2="60"/>
+          <path d="M170,60 Q190,53 210,60" stroke-width="1.2"/>
+          <circle cx="230" cy="76" r="4" fill="none" stroke="#3a3228" stroke-width="1.5"/>
+
+          <line x1="350" y1="113" x2="330" y2="60"/>
+          <line x1="350" y1="113" x2="340" y2="58"/>
+          <line x1="350" y1="113" x2="350" y2="57"/>
+          <line x1="350" y1="113" x2="360" y2="58"/>
+          <line x1="350" y1="113" x2="370" y2="60"/>
+          <path d="M330,60 Q350,53 370,60" stroke-width="1.2"/>
+          <circle cx="390" cy="76" r="4" fill="none" stroke="#3a3228" stroke-width="1.5"/>
+        </g>
+
+        <!-- Arrow showing offset -->
+        <line x1="110" y1="25" x2="150" y2="25" stroke="#b8a898" stroke-width="1" marker-end="url(#arr)"/>
+        <text x="155" y="29" font-size="10" fill="#b8a898" font-family="Jost">Fans offset each row</text>
+
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6" fill="#b8a898"/>
+          </marker>
+        </defs>
+      </svg>
+      <p class="stitch-caption">Pattern A — Fan Stitch (5-dc fan) · Rows alternate position like brickwork</p>
+    </div>
+
+    <div class="pattern-row">
+      <span class="row-label">Foundation:</span> Chain multiple of 6 + 3<br>
+      <span class="row-label">Row 1:</span> 1 sc in 2nd ch from hook, *skip 2 ch, 5 dc into next ch (fan), skip 2 ch, 1 sc; rep * to end<br>
+      <span class="row-label">Row 2:</span> Ch 3, turn. 2 dc in first sc, *sc in center dc of fan, 5 dc in next sc; rep *, end 3 dc in last sc<br>
+      <span class="row-label">Row 3:</span> Ch 1, turn. Sc in first dc, *5 dc in next sc, sc in center of fan; rep * to end<br>
+      <span class="row-label">Repeat:</span> Rows 2–3 for pattern
+    </div>
+
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;margin:32px 0 12px;">Pattern B — Scallop Edging (縁編みB)</h3>
+    <p>Used on all finished edges: hem, sleeve ruffle outer edge, neckline, and the waist braid. Creates the delicate wave visible along the bottom of the blouse in the finished photo.</p>
+
+    <!-- Scallop edge SVG -->
+    <div class="stitch-demo">
+      <svg width="580" height="100" viewBox="0 0 580 100" xmlns="http://www.w3.org/2000/svg">
+        <rect width="580" height="100" fill="#f5f0e8"/>
+        <!-- Foundation row of sc -->
+        <g fill="#3a3228">
+          <circle cx="30" cy="45" r="3.5"/>
+          <circle cx="57" cy="45" r="3.5"/>
+          <circle cx="84" cy="45" r="3.5"/>
+          <circle cx="111" cy="45" r="3.5"/>
+          <circle cx="138" cy="45" r="3.5"/>
+          <circle cx="165" cy="45" r="3.5"/>
+          <circle cx="192" cy="45" r="3.5"/>
+          <circle cx="219" cy="45" r="3.5"/>
+          <circle cx="246" cy="45" r="3.5"/>
+          <circle cx="273" cy="45" r="3.5"/>
+          <circle cx="300" cy="45" r="3.5"/>
+          <circle cx="327" cy="45" r="3.5"/>
+          <circle cx="354" cy="45" r="3.5"/>
+          <circle cx="381" cy="45" r="3.5"/>
+          <circle cx="408" cy="45" r="3.5"/>
+          <circle cx="435" cy="45" r="3.5"/>
+          <circle cx="462" cy="45" r="3.5"/>
+          <circle cx="489" cy="45" r="3.5"/>
+          <circle cx="516" cy="45" r="3.5"/>
+          <circle cx="543" cy="45" r="3.5"/>
+        </g>
+        <!-- Scallop shells -->
+        <g stroke="#3a3228" stroke-width="1.5" fill="none">
+          <path d="M30,43 Q43,18 57,43"/>
+          <path d="M57,43 Q70,18 84,43"/>
+          <path d="M84,43 Q97,18 111,43"/>
+          <path d="M111,43 Q124,18 138,43"/>
+          <path d="M138,43 Q151,18 165,43"/>
+          <path d="M165,43 Q178,18 192,43"/>
+          <path d="M192,43 Q205,18 219,43"/>
+          <path d="M219,43 Q232,18 246,43"/>
+          <path d="M246,43 Q259,18 273,43"/>
+          <path d="M273,43 Q286,18 300,43"/>
+          <path d="M300,43 Q313,18 327,43"/>
+          <path d="M327,43 Q340,18 354,43"/>
+          <path d="M354,43 Q367,18 381,43"/>
+          <path d="M381,43 Q394,18 408,43"/>
+          <path d="M408,43 Q421,18 435,43"/>
+          <path d="M435,43 Q448,18 462,43"/>
+          <path d="M462,43 Q475,18 489,43"/>
+          <path d="M489,43 Q502,18 516,43"/>
+          <path d="M516,43 Q529,18 543,43"/>
+        </g>
+        <!-- Picots at top of scallops -->
+        <g stroke="#3a3228" stroke-width="1" fill="none">
+          <circle cx="43.5" cy="18" r="2.5"/>
+          <circle cx="70.5" cy="18" r="2.5"/>
+          <circle cx="97.5" cy="18" r="2.5"/>
+          <circle cx="124.5" cy="18" r="2.5"/>
+          <circle cx="151.5" cy="18" r="2.5"/>
+          <circle cx="178.5" cy="18" r="2.5"/>
+          <circle cx="205.5" cy="18" r="2.5"/>
+          <circle cx="232.5" cy="18" r="2.5"/>
+          <circle cx="259.5" cy="18" r="2.5"/>
+          <circle cx="286.5" cy="18" r="2.5"/>
+          <circle cx="313.5" cy="18" r="2.5"/>
+          <circle cx="340.5" cy="18" r="2.5"/>
+          <circle cx="367.5" cy="18" r="2.5"/>
+          <circle cx="394.5" cy="18" r="2.5"/>
+          <circle cx="421.5" cy="18" r="2.5"/>
+          <circle cx="448.5" cy="18" r="2.5"/>
+          <circle cx="475.5" cy="18" r="2.5"/>
+          <circle cx="502.5" cy="18" r="2.5"/>
+          <circle cx="529.5" cy="18" r="2.5"/>
+        </g>
+        <!-- Bottom line -->
+        <line x1="15" y1="65" x2="565" y2="65" stroke="#e8e0d0" stroke-width="1"/>
+        <text x="15" y="82" font-size="10" fill="#b8a898" font-family="Jost">Applied to all finished edges</text>
+      </svg>
+      <p class="stitch-caption">Pattern B — Scallop Edging with picot tops</p>
+    </div>
+
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;margin:32px 0 12px;">Pattern C — Ruffle Lace (模様編みC)</h3>
+    <p>Used exclusively for the flutter sleeve ruffle panels. A fan-on-fan construction creates a wider outer edge than inner edge, giving the ruffle its natural flare. Work back and forth — do not join in the round.</p>
+
+    <div class="note">
+      <strong>Japanese Symbol Key</strong>
+      ○— = attach new yarn &nbsp;|&nbsp; ▶ = cut yarn &nbsp;|&nbsp; ↩ = carry / pass yarn to next section
+    </div>
+  </div>
+</div>
+
+
+<!-- CONSTRUCTION OVERVIEW -->
+<div class="section">
+  <div class="container">
+    <div class="section-number">03</div>
+    <h2 class="section-title">Construction Overview</h2>
+    <p class="section-subtitle">10 separate pieces, then assembled</p>
+
+    <p>Unlike many garments crocheted in the round, this blouse is constructed flat in panels that are seamed together. This gives precise shaping and allows the lace pattern to always read correctly.</p>
+
+    <!-- Schematic diagram -->
+    <div class="assembly-diagram">
+      <svg width="540" height="340" viewBox="0 0 540 340" xmlns="http://www.w3.org/2000/svg">
+        <rect width="540" height="340" fill="#f5f0e8"/>
+
+        <!-- Front center (5図) - large center piece -->
+        <rect x="170" y="60" width="200" height="180" rx="2" fill="none" stroke="#3a3228" stroke-width="2"/>
+        <!-- Neckline curve -->
+        <path d="M170,60 Q200,40 270,38 Q340,40 370,60" fill="#f5f0e8" stroke="#3a3228" stroke-width="2"/>
+        <!-- Waist band -->
+        <rect x="170" y="230" width="200" height="18" fill="none" stroke="#8b7355" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="220" y="243" font-size="9" fill="#8b7355" font-family="Jost">Waist Band</text>
+        <!-- Fan texture hint -->
+        <g stroke="#b8a898" stroke-width="0.8" opacity="0.5">
+          <path d="M200,90 L193,108 M200,90 L200,109 M200,90 L207,108"/>
+          <path d="M220,90 L213,108 M220,90 L220,109 M220,90 L227,108"/>
+          <path d="M240,90 L233,108 M240,90 L240,109 M240,90 L247,108"/>
+          <path d="M260,90 L253,108 M260,90 L260,109 M260,90 L267,108"/>
+          <path d="M280,90 L273,108 M280,90 L280,109 M280,90 L287,108"/>
+          <path d="M300,90 L293,108 M300,90 L300,109 M300,90 L307,108"/>
+          <path d="M320,90 L313,108 M320,90 L320,109 M320,90 L327,108"/>
+          <path d="M340,90 L333,108 M340,90 L340,109 M340,90 L347,108"/>
+        </g>
+        <text x="240" y="158" font-size="11" fill="#3a3228" font-family="Cormorant Garamond" font-style="italic">Front</text>
+        <text x="245" y="172" font-size="9" fill="#8b7355" font-family="Jost">5図 前中央</text>
+
+        <!-- Right front side (6図) -->
+        <path d="M100,110 L170,110 L170,248 L100,248 Q90,200 92,160 Q88,130 100,110 Z" fill="none" stroke="#3a3228" stroke-width="1.5"/>
+        <!-- Ruffle base hint -->
+        <path d="M100,110 Q80,90 70,70 Q85,60 100,70 Q90,85 100,100" fill="none" stroke="#8b7355" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="108" y="185" font-size="9" fill="#3a3228" font-family="Jost">右前脇</text>
+        <text x="108" y="197" font-size="9" fill="#b8a898" font-family="Jost">6図</text>
+
+        <!-- Left front side (7図) -->
+        <path d="M440,110 L370,110 L370,248 L440,248 Q450,200 448,160 Q452,130 440,110 Z" fill="none" stroke="#3a3228" stroke-width="1.5"/>
+        <path d="M440,110 Q460,90 470,70 Q455,60 440,70 Q450,85 440,100" fill="none" stroke="#8b7355" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="390" y="185" font-size="9" fill="#3a3228" font-family="Jost">左前脇</text>
+        <text x="390" y="197" font-size="9" fill="#b8a898" font-family="Jost">7図</text>
+
+        <!-- Ruffle panels (dashed) -->
+        <path d="M68,70 Q50,90 42,115 Q50,125 60,118 Q55,102 65,90 Q75,78 80,68 Q75,65 68,70 Z" fill="none" stroke="#8b7355" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="20" y="98" font-size="8" fill="#8b7355" font-family="Jost">Ruffle</text>
+
+        <path d="M472,70 Q490,90 498,115 Q490,125 480,118 Q485,102 475,90 Q465,78 460,68 Q465,65 472,70 Z" fill="none" stroke="#8b7355" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="487" y="98" font-size="8" fill="#8b7355" font-family="Jost">Ruffle</text>
+
+        <!-- Bottom scallop -->
+        <path d="M170,248 Q180,262 190,248 Q200,262 210,248 Q220,262 230,248 Q240,262 250,248 Q260,262 270,248 Q280,262 290,248 Q300,262 310,248 Q320,262 330,248 Q340,262 350,248 Q360,262 370,248" fill="none" stroke="#3a3228" stroke-width="1.2"/>
+
+        <!-- Center back line (buttons) -->
+        <line x1="270" y1="38" x2="270" y2="248" stroke="#b8a898" stroke-width="0.8" stroke-dasharray="4,3"/>
+        <!-- Button indicators -->
+        <circle cx="270" cy="75" r="3" fill="#b8a898"/>
+        <circle cx="270" cy="100" r="3" fill="#b8a898"/>
+        <circle cx="270" cy="125" r="3" fill="#b8a898"/>
+        <circle cx="270" cy="150" r="3" fill="#b8a898"/>
+        <circle cx="270" cy="175" r="3" fill="#b8a898"/>
+        <circle cx="270" cy="200" r="3" fill="#b8a898"/>
+        <text x="276" y="90" font-size="8" fill="#b8a898" font-family="Jost">Buttons</text>
+
+        <!-- Labels -->
+        <text x="175" y="320" font-size="10" fill="#3a3228" font-family="Jost">← Schematic: Front View (simplified)</text>
+        <text x="175" y="333" font-size="9" fill="#b8a898" font-family="Jost">Dashed = flutter ruffle panels · Gray dots = button positions</text>
+      </svg>
+    </div>
+
+    <table class="pieces-table">
+      <thead>
+        <tr>
+          <th>Diagram</th>
+          <th>Japanese</th>
+          <th>Piece</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>5図</td>
+          <td class="jp">前中央</td>
+          <td>Front Center</td>
+          <td>Largest piece. Start here. ~20 rows.</td>
+        </tr>
+        <tr>
+          <td>6図</td>
+          <td class="jp">右前脇</td>
+          <td>Right Front Side</td>
+          <td>Ruffle base widens at shoulder</td>
+        </tr>
+        <tr>
+          <td>7図</td>
+          <td class="jp">左前脇</td>
+          <td>Left Front Side</td>
+          <td>Mirror of 6図</td>
+        </tr>
+        <tr>
+          <td>1図</td>
+          <td class="jp">右後ろ</td>
+          <td>Right Back</td>
+          <td>Includes button band edge. ~29 rows.</td>
+        </tr>
+        <tr>
+          <td>3図</td>
+          <td class="jp">右後ろ脇</td>
+          <td>Right Back Side</td>
+          <td>Narrower fill panel</td>
+        </tr>
+        <tr>
+          <td>8図</td>
+          <td class="jp">右後ろ脇</td>
+          <td>Right Back Side Panel</td>
+          <td>With Pattern B waist edging</td>
+        </tr>
+        <tr>
+          <td>9図</td>
+          <td class="jp">左後ろ脇</td>
+          <td>Left Back Side Panel</td>
+          <td>Mirror of 8図</td>
+        </tr>
+        <tr>
+          <td>10図</td>
+          <td class="jp">前脇</td>
+          <td>Front Side Panels</td>
+          <td>Small underarm infill pieces</td>
+        </tr>
+        <tr>
+          <td>—</td>
+          <td class="jp">ブレード</td>
+          <td>Waist Braid / Band</td>
+          <td>Ch 121 (155 for larger). Pattern B both sides.</td>
+        </tr>
+        <tr>
+          <td>—</td>
+          <td class="jp">フリル</td>
+          <td>Ruffle Panels (×2)</td>
+          <td>Pattern C. ~11 rows. One per side.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- STEP BY STEP -->
+<div class="section">
+  <div class="container">
+    <div class="section-number">04</div>
+    <h2 class="section-title">Step-by-Step Instructions</h2>
+    <p class="section-subtitle">Work each piece individually, then assemble</p>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Front Center Panel (5図)</h3>
+        <p>This is your starting piece and the foundation of the blouse. Chain enough stitches for your base width — approximately 63–65 fan repeats for a medium size (roughly 375–390 chains for a 6-chain repeat). The bottom of this piece is your hem width.</p>
+        <p>Work upward in fan stitch (Pattern A), maintaining full fans across. As you approach the bust, begin very gradual waist shaping by working the edge fans as half-fans if needed (work only 3 dc instead of 5 at the side edges on a few rows).</p>
+        <p>For the neckline: when you have approximately 20–21 rows worked, the piece divides. Work each shoulder separately. On the right side, decrease 1 fan per row at the neckline edge for 4–5 rows until you have a strap width of approximately 4–5 fans. Fasten off, then join yarn to left side and mirror.</p>
+        <p>The neckline is a wide, shallow scoop — shallower at front center and deeper toward the sides. Work 1 round of sc (細編み) around the entire neckline edge to stabilize it.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>Back Panels (1図, 3図, 8図, 9図)</h3>
+        <p>The back right (1図) is approximately the same height as the front but narrows to a higher neckline. Work approximately 29–30 rows total. The back neckline is a gentle curve rather than the deep front scoop.</p>
+        <p><strong>Button band:</strong> Along the center-back edge of the right back piece, work 1 row of sc evenly down the full length. Then work a second row of sc, adding button loops: at evenly spaced intervals (approximately every 2.5–3 cm), ch 4, skip 2 sc, sc — this creates the button loop. You'll need 5–6 loops total. For the left back, work 2 rows of plain sc — no loops.</p>
+        <p>The back side panels (3図, 8図, 9図) are narrower fill pieces that connect the back to the side seams. Work them to the same row height as the adjacent main pieces and keep stitch count consistent for a smooth seam.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>Front Side Panels (6図, 7図, 10図)</h3>
+        <p>The right (6図) and left (7図) front side panels are mirror images of each other. They are wider at the bottom and shoulder than at the waist — this creates the fitted waist silhouette.</p>
+        <p>Crucially, the shoulder area widens significantly: these panels form the base for the flutter ruffle sleeves. Work about 14–15 rows, increasing the stitch count at the top 3–4 rows to create a broad shoulder shelf (approximately 8–10 fans wide at the top vs. 5–6 at the waist).</p>
+        <p>The small front side infill pieces (10図) are short, rectangular panels worked in Pattern A and Pattern B edging to fill the underarm area between the side panels and back.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h3>Waist Braid / Band (ブレード)</h3>
+        <p>Chain <strong>121 stitches</strong> (155 for the larger size). The band is approximately 1.1–1.5 cm tall (small/medium).</p>
+        <p>Work 2 rows of Pattern B scallop edging on both long edges of the chain. The short ends are approximately 33.5 cm / 31 rows for the smaller size. This creates a firm, decorative band that cinches the waist and visually separates the body from the hem.</p>
+        <div class="note">
+          <strong>Tip</strong>
+          Block the waist band before attaching it. This helps the scallops sit flat and even, and makes it much easier to join to the body with consistent tension.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h3>Flutter Ruffle Panels (フリル)</h3>
+        <p>Work two ruffle panels (one per side) in Pattern C. Chain approximately 63 stitches for your foundation. The ruffle is wider at the outer hem edge than the inner armhole edge — this flare is built into Pattern C naturally as you fan out into the outer rows.</p>
+        <p>Work approximately 11 rows total. The inner straight edge will attach to the armhole; the curved outer edge receives Pattern B scallop edging. The ruffle frills in Pattern C create the overlapping shell-lace visible in the finished photo.</p>
+        <p>Block the ruffles aggressively — pin them flat in a gentle arc and allow to dry completely before attaching.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ASSEMBLY -->
+<div class="section">
+  <div class="container">
+    <div class="section-number">05</div>
+    <h2 class="section-title">Assembly</h2>
+    <p class="section-subtitle">Seaming order matters — follow this sequence</p>
+
+    <p>Block all pieces before assembly. Wet-block in cool water, gently squeeze (do not wring), pin to measurements, and allow to dry completely. The lace will open up beautifully and pieces will align more easily.</p>
+
+    <!-- Assembly order diagram -->
+    <div class="assembly-diagram">
+      <svg width="520" height="220" viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="520" height="220" fill="#f5f0e8"/>
+
+        <!-- Steps as connected nodes -->
+        <g font-family="Jost" font-size="10">
+          <!-- Step 1 -->
+          <rect x="20" y="80" width="80" height="50" rx="3" fill="#3a3228"/>
+          <text x="60" y="100" text-anchor="middle" fill="#f5f0e8">Join Side</text>
+          <text x="60" y="114" text-anchor="middle" fill="#d4c4b0">Panels</text>
+          <text x="60" y="127" text-anchor="middle" fill="#b8a898" font-size="9">to front &amp; back</text>
+
+          <!-- Arrow -->
+          <line x1="100" y1="105" x2="120" y2="105" stroke="#b8a898" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+          <!-- Step 2 -->
+          <rect x="120" y="80" width="80" height="50" rx="3" fill="#3a3228"/>
+          <text x="160" y="100" text-anchor="middle" fill="#f5f0e8">Shoulder</text>
+          <text x="160" y="114" text-anchor="middle" fill="#d4c4b0">Seams</text>
+          <text x="160" y="127" text-anchor="middle" fill="#b8a898" font-size="9">front to back</text>
+
+          <line x1="200" y1="105" x2="220" y2="105" stroke="#b8a898" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+          <!-- Step 3 -->
+          <rect x="220" y="80" width="80" height="50" rx="3" fill="#3a3228"/>
+          <text x="260" y="100" text-anchor="middle" fill="#f5f0e8">Attach</text>
+          <text x="260" y="114" text-anchor="middle" fill="#d4c4b0">Waist Band</text>
+          <text x="260" y="127" text-anchor="middle" fill="#b8a898" font-size="9">sc join</text>
+
+          <line x1="300" y1="105" x2="320" y2="105" stroke="#b8a898" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+          <!-- Step 4 -->
+          <rect x="320" y="80" width="80" height="50" rx="3" fill="#3a3228"/>
+          <text x="360" y="100" text-anchor="middle" fill="#f5f0e8">Attach</text>
+          <text x="360" y="114" text-anchor="middle" fill="#d4c4b0">Ruffles</text>
+          <text x="360" y="127" text-anchor="middle" fill="#b8a898" font-size="9">to armholes</text>
+
+          <line x1="400" y1="105" x2="420" y2="105" stroke="#b8a898" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+          <!-- Step 5 -->
+          <rect x="420" y="80" width="80" height="50" rx="3" fill="#8b7355"/>
+          <text x="460" y="100" text-anchor="middle" fill="#f5f0e8">Sew</text>
+          <text x="460" y="114" text-anchor="middle" fill="#f5f0e8">Buttons</text>
+          <text x="460" y="127" text-anchor="middle" fill="#e8d8c8" font-size="9">5–6 buttons</text>
+        </g>
+
+        <defs>
+          <marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6" fill="#b8a898"/>
+          </marker>
+        </defs>
+
+        <text x="20" y="175" font-size="10" fill="#3a3228" font-family="Cormorant Garamond" font-style="italic">Seam method:</text>
+        <text x="20" y="192" font-size="10" fill="#3a3228" font-family="Jost">Use a flat slip stitch seam or single crochet join. SC join gives a visible ridge — use on wrong side or as</text>
+        <text x="20" y="207" font-size="10" fill="#3a3228" font-family="Jost">a decorative detail. Slip stitch join is nearly invisible. Match fan rows carefully across seams.</text>
+      </svg>
+    </div>
+
+    <ul class="checklist">
+      <li>Join all side panels to front center and back pieces using flat seam. Work from hem up to underarm, then continue up the side to the armhole opening.</li>
+      <li>Join shoulder seams — connect right front strap to right back shoulder, and left front strap to left back shoulder. These are short seams but critical for fit.</li>
+      <li>Attach the waist braid with a slip stitch join along the lower body, centering the braid at the narrowest waist point. The braid should overlap slightly onto both the main body and the hem section.</li>
+      <li>Attach the ruffle panels to the armhole openings, sc joining the straight inner edge of each ruffle to the armhole edge. Ease the ruffle gently — do not pull tight.</li>
+      <li>Sew pearl buttons to the left back band, aligning precisely with the button loops on the right back. Space evenly over the full back opening length.</li>
+      <li>Final block the completed garment. Lay flat, pin to finished measurements, and allow to dry fully.</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- TIPS -->
+<div class="section">
+  <div class="container">
+    <div class="section-number">06</div>
+    <h2 class="section-title">Tips & Notes</h2>
+    <p class="section-subtitle">For best results</p>
+
+    <div class="materials-grid">
+      <div class="material-card">
+        <h4>Dye Lots</h4>
+        <p>Buy all yarn at once from the same dye lot. With 400–500g needed, even a subtle lot difference will show in the finished fabric — especially in natural ecru where variation is most visible.</p>
+      </div>
+      <div class="material-card">
+        <h4>Tension Consistency</h4>
+        <p>Take breaks and check your tension regularly. Fatigue causes tension to tighten. If working across multiple sessions, always start the new session with a few practice stitches to re-establish your gauge.</p>
+      </div>
+      <div class="material-card">
+        <h4>Blocking is Essential</h4>
+        <p>This lace will look unimpressive before blocking. Wet blocking with pinning opens the stitch pattern dramatically and is the difference between "homemade" and "heirloom."</p>
+      </div>
+      <div class="material-card">
+        <h4>Sizing</h4>
+        <p>The pattern includes at least 3 sizes. Numbers in parentheses on the diagrams correspond to larger sizes. When sizing up, use the larger stitch counts consistently across all pieces.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Pattern Source</strong>
+      This tutorial is reconstructed from Keito Dama issue 182 (Japanese pattern book). The original diagrams use Japanese crochet symbols which follow standard JIS notation — the same symbols used in most international crochet books. If you have the original book, refer to its symbol legend for precise stitch definitions.
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="background:var(--deep);padding:48px 40px;text-align:center;">
+  <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px;opacity:0.4;">
+    <path d="M20,5 L20,35 M5,20 L35,20 M8,8 L32,32 M32,8 L8,32" stroke="white" stroke-width="1" fill="none"/>
+    <circle cx="20" cy="20" r="12" stroke="white" stroke-width="1" fill="none"/>
+  </svg>
+  <p style="color:var(--taupe);font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;">Keito Dama 182 · Lace Blouse Tutorial</p>
+  <p style="color:#5a5048;font-size:0.75rem;margin-top:8px;">Pattern reconstruction based on original Japanese diagrams</p>
+</div>
+
+</body>
+</html>

@@ -31,7 +31,7 @@ import matplotlib.patches as patches
 # ================================================================
 #  CONFIG
 # ================================================================
-DATA_DIR        = "data/project1_2img"
+DATA_DIR        = "data/project2_img"
 ANNOTATION_FILE = os.path.join(DATA_DIR, "result.json")
 TEST_IMG_DIR    = "data/test_img"
 
@@ -39,12 +39,13 @@ TEST_IMG_DIR    = "data/test_img"
 MODEL_NAME      = "microsoft/conditional-detr-resnet-50"
 
 BATCH_SIZE      = 1       # transformer detectors are memory-hungry; start at 1
-EPOCHS          = 10
+EPOCHS          = 20
 LR              = 1e-4    # transformer head / decoder
 LR_BACKBONE     = 1e-5    # pretrained backbone needs a much smaller LR
 WEIGHT_DECAY    = 1e-4
 GRAD_CLIP_NORM  = 0.1     # essential for transformer training stability
-SCORE_THRESHOLD = 0.7     # DETR models often need a higher threshold than Faster R-CNN
+SCORE_THRESHOLD = 0.0     # DETR outputs 300 queries — threshold filters out background ones
+                          # raise to 0.7 if you still see too many overlapping boxes
 
 DEVICE          = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 MODEL_SAVE_PATH = "crochet_detr.pth"
@@ -350,7 +351,7 @@ def visualize_test_predictions(model_path=MODEL_SAVE_PATH, num_images=3):
 if __name__ == "__main__":
     train()
     visualize_predictions()
-    # visualize_test_predictions()
+    visualize_test_predictions()
 
 
 # ================================================================

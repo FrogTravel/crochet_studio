@@ -1,0 +1,2560 @@
+{
+  "schema_type": "crochet_pattern",
+  "title": "IMG_1546",
+  "classifier_used": "cnn",
+  "stitch_legend": {
+    "ch": "Chain stitch",
+    "dc": "Double crochet",
+    "fan": "Fan/shell stitch",
+    "sc": "Single crochet",
+    "tr": "Treble crochet"
+  },
+  "pieces": [
+    {
+      "id": "piece_1",
+      "label": "Piece 1",
+      "outline": [
+        [
+          0,
+          0
+        ],
+        [
+          31,
+          0
+        ],
+        [
+          31,
+          180
+        ],
+        [
+          0,
+          180
+        ]
+      ],
+      "rows": [
+        {
+          "row_number": 8,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 8
+            },
+            {
+              "type": "fan",
+              "count": 5
+            },
+            {
+              "type": "empty",
+              "count": 18
+            }
+          ]
+        },
+        {
+          "row_number": 10,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 7
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "row_number": 11,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 22
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "row_number": 12,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 11
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 17
+            }
+          ]
+        },
+        {
+          "row_number": 13,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 8
+            },
+            {
+              "type": "dc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 22
+            }
+          ]
+        },
+        {
+          "row_number": 16,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 8
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 22
+            }
+          ]
+        },
+        {
+          "row_number": 17,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 8
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 22
+            }
+          ]
+        },
+        {
+          "row_number": 18,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 9
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "row_number": 19,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 8
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 4
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 3
+            },
+            {
+              "type": "empty",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "row_number": 22,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 8
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 12
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "row_number": 24,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 8
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 22
+            }
+          ]
+        },
+        {
+          "row_number": 25,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 9
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 6
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "row_number": 26,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 17
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 3
+            },
+            {
+              "type": "empty",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "row_number": 29,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 8
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "row_number": 32,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 15
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 15
+            }
+          ]
+        },
+        {
+          "row_number": 33,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 20
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 10
+            }
+          ]
+        },
+        {
+          "row_number": 36,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 10
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 16
+            }
+          ]
+        },
+        {
+          "row_number": 41,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 6
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 16
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 7
+            }
+          ]
+        },
+        {
+          "row_number": 42,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 6
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 3
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 10
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 7
+            }
+          ]
+        },
+        {
+          "row_number": 43,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 10
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 4
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "row_number": 49,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 10
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 3
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 16
+            }
+          ]
+        },
+        {
+          "row_number": 50,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 17
+            },
+            {
+              "type": "sc",
+              "count": 5
+            },
+            {
+              "type": "empty",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "row_number": 53,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 9
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 21
+            }
+          ]
+        },
+        {
+          "row_number": 54,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 7
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 14
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "row_number": 55,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 7
+            },
+            {
+              "type": "dc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "row_number": 57,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 21
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "row_number": 58,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 6
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 24
+            }
+          ]
+        },
+        {
+          "row_number": 59,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 23
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 7
+            }
+          ]
+        },
+        {
+          "row_number": 60,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 7
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 2
+            },
+            {
+              "type": "empty",
+              "count": 14
+            }
+          ]
+        },
+        {
+          "row_number": 63,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 21
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "row_number": 64,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 22
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "row_number": 66,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 7
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "row_number": 67,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 9
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 6
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "row_number": 68,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 22
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "row_number": 70,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 21
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "row_number": 72,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 24
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "row_number": 73,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 9
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 14
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "row_number": 74,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 16
+            },
+            {
+              "type": "sc",
+              "count": 5
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "row_number": 77,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 8
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "row_number": 81,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 18
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 10
+            }
+          ]
+        },
+        {
+          "row_number": 84,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 6
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 6
+            },
+            {
+              "type": "empty",
+              "count": 15
+            }
+          ]
+        },
+        {
+          "row_number": 85,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 6
+            },
+            {
+              "type": "dc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 16
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 7
+            }
+          ]
+        },
+        {
+          "row_number": 86,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 6
+            },
+            {
+              "type": "dc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 16
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 7
+            }
+          ]
+        },
+        {
+          "row_number": 87,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 20
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "row_number": 89,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 5
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 25
+            }
+          ]
+        },
+        {
+          "row_number": 90,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 6
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 17
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "row_number": 91,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 6
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 5
+            },
+            {
+              "type": "sc",
+              "count": 6
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "row_number": 94,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 20
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "row_number": 98,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 15
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "row_number": 101,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 5
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 5
+            },
+            {
+              "type": "empty",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "row_number": 102,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 24
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "row_number": 103,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 24
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "row_number": 104,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 17
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "row_number": 105,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 19
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 7
+            }
+          ]
+        },
+        {
+          "row_number": 107,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 25
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "row_number": 108,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 5
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 6
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 16
+            }
+          ]
+        },
+        {
+          "row_number": 111,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 17
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "row_number": 112,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 23
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 7
+            }
+          ]
+        },
+        {
+          "row_number": 115,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 10
+            },
+            {
+              "type": "sc",
+              "count": 3
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 3
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "row_number": 116,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 25
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "row_number": 117,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 25
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "row_number": 118,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 4
+            },
+            {
+              "type": "sc",
+              "count": 4
+            },
+            {
+              "type": "empty",
+              "count": 11
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 7
+            }
+          ]
+        },
+        {
+          "row_number": 119,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 4
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 26
+            }
+          ]
+        },
+        {
+          "row_number": 120,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 25
+            },
+            {
+              "type": "dc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "row_number": 121,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 14
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 8
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "row_number": 122,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 14
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "row_number": 123,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 2
+            },
+            {
+              "type": "dc",
+              "count": 1
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 21
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "row_number": 124,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 25
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "row_number": 125,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 5
+            },
+            {
+              "type": "sc",
+              "count": 3
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 21
+            }
+          ]
+        },
+        {
+          "row_number": 126,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 13
+            },
+            {
+              "type": "fan",
+              "count": 2
+            },
+            {
+              "type": "empty",
+              "count": 16
+            }
+          ]
+        },
+        {
+          "row_number": 127,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 12
+            },
+            {
+              "type": "sc",
+              "count": 5
+            },
+            {
+              "type": "empty",
+              "count": 14
+            }
+          ]
+        },
+        {
+          "row_number": 128,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 12
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 18
+            }
+          ]
+        },
+        {
+          "row_number": 129,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 22
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "row_number": 132,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 3
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "row_number": 133,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 3
+            },
+            {
+              "type": "dc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 27
+            }
+          ]
+        },
+        {
+          "row_number": 135,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 22
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "row_number": 136,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 3
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 20
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "ch",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "row_number": 137,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 26
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "row_number": 138,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 22
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 3
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "row_number": 139,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 13
+            },
+            {
+              "type": "fan",
+              "count": 3
+            },
+            {
+              "type": "empty",
+              "count": 6
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 3
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "row_number": 140,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 4
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 8
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 15
+            }
+          ]
+        },
+        {
+          "row_number": 141,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 27
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "row_number": 142,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 3
+            },
+            {
+              "type": "sc",
+              "count": 3
+            },
+            {
+              "type": "empty",
+              "count": 25
+            }
+          ]
+        },
+        {
+          "row_number": 144,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 5
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 9
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 10
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "row_number": 145,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 14
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 11
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "row_number": 148,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 4
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 19
+            },
+            {
+              "type": "dc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "row_number": 149,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 2
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 10
+            },
+            {
+              "type": "fan",
+              "count": 2
+            },
+            {
+              "type": "empty",
+              "count": 15
+            }
+          ]
+        },
+        {
+          "row_number": 150,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 4
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 22
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "row_number": 151,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 2
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 26
+            }
+          ]
+        },
+        {
+          "row_number": 153,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 25
+            },
+            {
+              "type": "sc",
+              "count": 3
+            },
+            {
+              "type": "empty",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "row_number": 154,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 23
+            },
+            {
+              "type": "dc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "row_number": 155,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 28
+            },
+            {
+              "type": "ch",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "row_number": 156,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 2
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 28
+            }
+          ]
+        },
+        {
+          "row_number": 157,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "dc",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 27
+            }
+          ]
+        },
+        {
+          "row_number": 158,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 3
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "ch",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 19
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 2
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "row_number": 159,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 27
+            }
+          ]
+        },
+        {
+          "row_number": 160,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 27
+            }
+          ]
+        },
+        {
+          "row_number": 161,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 27
+            }
+          ]
+        },
+        {
+          "row_number": 162,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 26
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "row_number": 163,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 28
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "row_number": 168,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 2
+            },
+            {
+              "type": "dc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 28
+            }
+          ]
+        },
+        {
+          "row_number": 174,
+          "stitches": [
+            {
+              "type": "empty",
+              "count": 2
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 24
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "schema_type": "crochet_pattern",
+  "title": "39",
+  "classifier_used": "cnn",
+  "stitch_legend": {
+    "ch": "Chain stitch",
+    "fan": "Fan/shell stitch",
+    "sc": "Single crochet",
+    "tr": "Treble crochet"
+  },
+  "pieces": [
+    {
+      "id": "piece_1",
+      "label": "Piece 1",
+      "outline": [
+        [
+          0,
+          0
+        ],
+        [
+          13,
+          0
+        ],
+        [
+          13,
+          6
+        ],
+        [
+          0,
+          6
+        ]
+      ],
+      "rows": [
+        {
+          "row_number": 1,
+          "stitches": [
+            {
+              "type": "ch",
+              "count": 3
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "ch",
+              "count": 5
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "ch",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "row_number": 3,
+          "stitches": [
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 2
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 3
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "row_number": 4,
+          "stitches": [
+            {
+              "type": "sc",
+              "count": 3
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "row_number": 6,
+          "stitches": [
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "sc",
+              "count": 2
+            },
+            {
+              "type": "fan",
+              "count": 1
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "fan",
+              "count": 2
+            },
+            {
+              "type": "tr",
+              "count": 1
+            },
+            {
+              "type": "empty",
+              "count": 5
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

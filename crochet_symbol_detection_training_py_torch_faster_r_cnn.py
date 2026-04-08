@@ -13,7 +13,7 @@ for crochet symbols (Option C).
 """
 
 # ---------------- CONFIG ----------------
-DATA_DIR = "data/project1_2img"  # folder with images + annotations.json
+DATA_DIR = "data/project2_img"  # folder with images + annotations.json
 ANNOTATION_FILE = os.path.join(DATA_DIR, "result.json")
 BATCH_SIZE = 2
 EPOCHS = 10
@@ -211,20 +211,22 @@ def visualize_test_predictions(model_path="crochet_detector.pth", num_images=3):
 
         print(f"Labels: {labels}")
 
+        classes = ['bobble', 'chain_arc', 'dc_line', 'fan_group']
+        colors = ['red', 'blue', 'green', 'orange']
         for box, label, score in zip(boxes, labels, scores):
             x1, y1, x2, y2 = box
-            rect = patches.Circle(
-                (x1, y1), radius=1,
-                linewidth=2, edgecolor='red', facecolor='none'
+            rect = patches.Rectangle(
+                (x1, y1), x2 - x1, y2 - y1,
+                linewidth=2, edgecolor=colors[label.item() % len(colors)], facecolor='none'
             )
             ax.add_patch(rect)
 
-            ax.text(x1, y1, f"Class {label.item()} {score:.2f}", color='red')
+            ax.text(x1, y1, f"Class {classes[label.item() % len(classes)]} {score:.2f}", color=colors[label.item() % len(colors)])
 
         plt.show()
 
 
 if __name__ == "__main__":
-    train()
-    #visualize_predictions()
+    #train()
+    visualize_predictions()
     visualize_test_predictions()

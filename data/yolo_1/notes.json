@@ -1,0 +1,21 @@
+{
+  "categories": [
+    {
+      "id": 0,
+      "name": "chain"
+    },
+    {
+      "id": 1,
+      "name": "double crochet"
+    },
+    {
+      "id": 2,
+      "name": "half double crochet group 3"
+    }
+  ],
+  "info": {
+    "year": 2026,
+    "version": "1.0",
+    "contributor": "Label Studio"
+  }
+}

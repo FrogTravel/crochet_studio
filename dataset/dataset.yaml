@@ -1,0 +1,8 @@
+path: dataset
+train: images/train
+val: images/val
+
+names:
+  0: chain
+  1: double crochet
+  2: half double crochet group 3

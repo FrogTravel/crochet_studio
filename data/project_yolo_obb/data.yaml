@@ -3,13 +3,13 @@ train: train/images
 val: train/images   # You can point to train for now if the dataset is small
 
 names:
-  0: treble
-  1: slip_stitch
-  2: chain
+  0: chain
+  1: single
+  2: treble
   3: double
   4: half_double
   5: ensemble_wrong
   6: ensemble_chain
-  7: single
+  7: slip_stitch
   8: fan
   9: noise

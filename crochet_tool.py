@@ -7,6 +7,7 @@ import io
 import numpy as np
 import matplotlib.patches as patches
 import matplotlib.transforms as transforms
+from mcp.server.fastmcp import FastMCP, Image # Add Image here
 
 ###
 ###You need to tell the Claude app where your script lives.
@@ -90,12 +91,10 @@ def analyze_crochet_chart(image_path: str) -> str:
     Args:
         image_path: The local path to the crochet chart image.
     """
-    results = model.predict(image_path, conf=0.25)
-    
     # Run your existing Matplotlib SVG drawing logic here
     # 3. Main Execution
     trained_model = model
-    results = trained_model.predict(image_path, conf=0.25)
+    results = trained_model.predict(image_path, conf=0.25, verbose=False)
     res = results[0]
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 10))
@@ -141,17 +140,21 @@ def analyze_crochet_chart(image_path: str) -> str:
     ax1.axis('off')
     ax2.axis('off')
     plt.tight_layout()
-    plt.show()
 
-
-    # Save the result to a temporary file
-    output_path = "reconstructed_scheme.png"
-    # fig.savefig(output_path) ...
+    # --- THE MAGIC PART: Return image to Claude ---
     buf = io.BytesIO()
     plt.savefig(buf, format='png', bbox_inches='tight', pad_inches=0)
+    plt.close(fig)
     buf.seek(0)
+    image_data = buf.read()
     
-    return f"Processed! Scheme saved at {output_path}. I found {len(results[0].obb)} stitches."
+    # 3. Use the explicit 'content' return style to avoid Pydantic validation errors
+    from mcp.types import TextContent, ImageContent
+    
+    return [
+        TextContent(type="text", text=f"I found {len(res.obb)} stitches in this chart."),
+        ImageContent(type="image", data=image_data, mimeType="image/png")
+    ]
 
 if __name__ == "__main__":
     mcp.run()

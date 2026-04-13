@@ -23,7 +23,7 @@ CLASS_CONFIG = {
 # Use st.cache_resource so it doesn't reload the model on every click
 @st.cache_resource
 def load_crochet_model():
-    return YOLO('runs/obb/train5/weights/best.pt') # Ensure your best.pt is in the same folder
+    return YOLO('runs/obb/train6/weights/best.pt') # Ensure your best.pt is in the same folder
 
 model = load_crochet_model()
 

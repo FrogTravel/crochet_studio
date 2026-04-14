@@ -4,5 +4,11 @@ val: images/val
 
 names:
   0: chain
-  1: double crochet
-  2: half double crochet group 3
+  1: double
+  2: double treble
+  3: enseble_chain
+  4: fan
+  5: half_double
+  6: noise
+  7: single
+  8: treble

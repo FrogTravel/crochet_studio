@@ -1,88 +1,395 @@
-from mcp.server.fastmcp import FastMCP
-import torch
-from ultralytics import YOLO
+"""
+CrochetDesigner MCP Tool — Crochet chart image → structured detection data + SVG.
+
+Returns JSON-formatted detection results AND an embeddable SVG reconstruction
+so that Claude can compose beautiful HTML crochet tutorials with accurate diagrams.
+
+Setup:
+  Add to Claude Desktop config (~/Library/Application Support/Claude/claude_desktop_config.json):
+  {
+    "mcpServers": {
+      "CrochetDesigner": {
+        "command": "python",
+        "args": ["/ABSOLUTE/PATH/TO/crochet_tool.py"]
+      }
+    }
+  }
+"""
+
+from __future__ import annotations
+
+import json
+import math
+import os
+import sys
+
 import cv2 as cv
-import matplotlib.pyplot as plt
-import io
 import numpy as np
-import matplotlib.patches as patches
-import matplotlib.transforms as transforms
-from mcp.server.fastmcp import FastMCP, Image # Add Image here
 
-###
-###You need to tell the Claude app where your script lives.
+from mcp.server.fastmcp import FastMCP
 
-### Open the Claude Desktop config file:
+# Ensure local imports work
+sys.path.insert(0, os.path.dirname(__file__))
+from util.tiler import predict_adaptive, Detection
 
-### Mac:  ~/Library/Application Support/Claude/claude_desktop_config.json
+# ═══════════════════════════════════════════════════════════════════════════════
+# Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
 
-### Windows: %APPDATA%\Claude\claude_desktop_config.json
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "runs", "obb", "train6", "weights", "best.pt")
 
-### Add your tool to the mcpServers section:
-
-### JSON
-### {
-###  "mcpServers": {
-###    "crochet_engine": {
-###      "command": "python",
-###      "args": ["/ABSOLUTE/PATH/TO/crochet_tool.py"]
-###    }
-###  }
-### }
-
-# 1. Configuration: Abbreviations and Colors
+# 9-class system matching data/project_yolo_obb/data.yaml (ground truth)
 CLASS_CONFIG = {
-    "treble":      {"abbr": "tr", "color": "#00FF00"}, 
-    "double":      {"abbr": "dc", "color": "#FF00FF"}, 
-    "half_double": {"abbr": "hd", "color": "#00FFFF"}, 
-    "chain":       {"abbr": "ch", "color": "#0000FF"}, 
-    "single":      {"abbr": "sc", "color": "#FFD700"}, 
-    "slip_stitch": {"abbr": "sl", "color": "#FF8000"}, 
-    "fan":         {"abbr": "fa", "color": "#FF0000"},
+    "chain":          {"id": 0, "abbr": "ch", "color": "#4a6fa5", "svg_type": "chain"},
+    "double":         {"id": 1, "abbr": "dc", "color": "#8b5e83", "svg_type": "tall_stitch"},
+    "double treble":  {"id": 2, "abbr": "dtr","color": "#3a9a3a", "svg_type": "tall_stitch"},
+    "enseble_chain":  {"id": 3, "abbr": "ec", "color": "#b07a3a", "svg_type": "enseble_chain"},
+    "fan":            {"id": 4, "abbr": "fa", "color": "#c45a4a", "svg_type": "fan"},
+    "half_double":    {"id": 5, "abbr": "hd", "color": "#5a8a7a", "svg_type": "tall_stitch"},
+    "noise":          {"id": 6, "abbr": "no", "color": "#999999", "svg_type": "noise"},
+    "single":         {"id": 7, "abbr": "sc", "color": "#c4943a", "svg_type": "cross"},
+    "treble":         {"id": 8, "abbr": "tr", "color": "#5aaa5a", "svg_type": "tall_stitch"},
 }
 
-DEFAULT_COLOR = "#808080"
+# ═══════════════════════════════════════════════════════════════════════════════
+# SVG Symbol Generators
+# ═══════════════════════════════════════════════════════════════════════════════
+# Each returns an SVG group (<g>) string that can be embedded in an <svg> element.
+# All symbols are drawn relative to center (cx, cy) with given width/height/angle.
 
-# 2. SVG Icon Drawing Logic (FIXED rotate_deg_around)
-def draw_svg_icon(ax, label, x, y, w, h, angle_deg, color):
-    """Draws geometric crochet symbols using Matplotlib."""
-    # Create the transform: Rotate around the center (x, y) then link to plot axes
-    t = transforms.Affine2D().rotate_deg_around(x, y, angle_deg) + ax.transData
-    
-    if label == "chain":
-        # Chain is an oval
-        icon = patches.Ellipse((x, y), w*0.8, h*0.4, fill=False, color=color, linewidth=2, transform=t)
-        ax.add_patch(icon)
-    
-    elif label in ["half_double", "double", "treble", "fan"]:
-        # Vertical Stem
-        ax.plot([x, x], [y-h/2, y+h/2], color=color, lw=2, transform=t)
-        # Top Horizontal T-bar
-        ax.plot([x-w/3, x+w/3], [y-h/2, y-h/2], color=color, lw=2, transform=t)
-        
-        if label == "double":
-            # One angled bar
-            ax.plot([x-w/4, x+w/4], [y-h/8, y+h/8], color=color, lw=1.5, transform=t)
-        elif label == "treble":
-            # Two angled bars
-            ax.plot([x-w/4, x+w/4], [y-h/4, y-h/12], color=color, lw=1.5, transform=t)
-            ax.plot([x-w/4, x+w/4], [y+h/12, y+h/4], color=color, lw=1.5, transform=t)
-        elif label == "fan":
-            # Extra angled stems to represent a fan
-            ax.plot([x, x-w/3], [y+h/2, y-h/2], color=color, lw=1.5, transform=t, alpha=0.6)
-            ax.plot([x, x+w/3], [y+h/2, y-h/2], color=color, lw=1.5, transform=t, alpha=0.6)
-
-    else: 
-        # Default 'X' for single crochet or unknown
-        ax.plot([x-w/3, x+w/3], [y-h/3, y+h/3], color=color, lw=2, transform=t)
-        ax.plot([x-w/3, x+w/3], [y+h/3, y-h/3], color=color, lw=2, transform=t)
+def _svg_transform(cx: float, cy: float, angle_deg: float) -> str:
+    """Build SVG transform attribute for rotation around center."""
+    if abs(angle_deg) < 0.5:
+        return ""
+    return f' transform="rotate({angle_deg:.1f},{cx:.1f},{cy:.1f})"'
 
 
-# Initialize MCP
+def svg_chain(cx: float, cy: float, w: float, h: float, angle: float, color: str) -> str:
+    """Chain stitch: small oval/ellipse."""
+    rx = max(w * 0.35, 3)
+    ry = max(h * 0.2, 2)
+    t = _svg_transform(cx, cy, angle)
+    return (
+        f'<g{t}>'
+        f'<ellipse cx="{cx:.1f}" cy="{cy:.1f}" rx="{rx:.1f}" ry="{ry:.1f}" '
+        f'fill="none" stroke="{color}" stroke-width="1.5"/>'
+        f'</g>'
+    )
+
+
+def svg_tall_stitch(cx: float, cy: float, w: float, h: float, angle: float,
+                    color: str, n_bars: int = 1) -> str:
+    """Tall stitches: vertical stem + T-bar + diagonal slash(es).
+    n_bars: 1=double, 0=half_double, 2=treble."""
+    half_h = h / 2
+    bar_w = w * 0.3
+    t = _svg_transform(cx, cy, angle)
+    parts = [f'<g{t}>']
+    # Main vertical stem
+    parts.append(
+        f'<line x1="{cx:.1f}" y1="{cy - half_h:.1f}" '
+        f'x2="{cx:.1f}" y2="{cy + half_h:.1f}" '
+        f'stroke="{color}" stroke-width="1.8"/>'
+    )
+    # Top T-bar
+    parts.append(
+        f'<line x1="{cx - bar_w:.1f}" y1="{cy - half_h:.1f}" '
+        f'x2="{cx + bar_w:.1f}" y2="{cy - half_h:.1f}" '
+        f'stroke="{color}" stroke-width="1.8"/>'
+    )
+    # Diagonal slash bars
+    if n_bars >= 1:
+        slash_w = w * 0.2
+        parts.append(
+            f'<line x1="{cx - slash_w:.1f}" y1="{cy + h * 0.06:.1f}" '
+            f'x2="{cx + slash_w:.1f}" y2="{cy - h * 0.06:.1f}" '
+            f'stroke="{color}" stroke-width="1.3"/>'
+        )
+    if n_bars >= 2:
+        slash_w = w * 0.2
+        offset = h * 0.15
+        parts.append(
+            f'<line x1="{cx - slash_w:.1f}" y1="{cy + offset:.1f}" '
+            f'x2="{cx + slash_w:.1f}" y2="{cy + offset - h * 0.12:.1f}" '
+            f'stroke="{color}" stroke-width="1.3"/>'
+        )
+        parts.append(
+            f'<line x1="{cx - slash_w:.1f}" y1="{cy - offset + h * 0.12:.1f}" '
+            f'x2="{cx + slash_w:.1f}" y2="{cy - offset:.1f}" '
+            f'stroke="{color}" stroke-width="1.3"/>'
+        )
+    parts.append('</g>')
+    return '\n'.join(parts)
+
+
+def svg_cross(cx: float, cy: float, w: float, h: float, angle: float, color: str) -> str:
+    """Single crochet / X marker."""
+    dx = w * 0.25
+    dy = h * 0.25
+    t = _svg_transform(cx, cy, angle)
+    return (
+        f'<g{t}>'
+        f'<line x1="{cx - dx:.1f}" y1="{cy - dy:.1f}" '
+        f'x2="{cx + dx:.1f}" y2="{cy + dy:.1f}" '
+        f'stroke="{color}" stroke-width="1.8"/>'
+        f'<line x1="{cx - dx:.1f}" y1="{cy + dy:.1f}" '
+        f'x2="{cx + dx:.1f}" y2="{cy - dy:.1f}" '
+        f'stroke="{color}" stroke-width="1.8"/>'
+        f'</g>'
+    )
+
+
+def svg_fan(cx: float, cy: float, w: float, h: float, angle: float, color: str) -> str:
+    """Fan/shell stitch: multiple lines radiating from base + arc at top."""
+    half_h = h / 2
+    spread = w * 0.4
+    n_spokes = 5
+    t = _svg_transform(cx, cy, angle)
+    parts = [f'<g{t}>']
+    base_y = cy + half_h
+    for i in range(n_spokes):
+        frac = i / (n_spokes - 1) if n_spokes > 1 else 0.5
+        tip_x = cx - spread + 2 * spread * frac
+        tip_y = cy - half_h
+        parts.append(
+            f'<line x1="{cx:.1f}" y1="{base_y:.1f}" '
+            f'x2="{tip_x:.1f}" y2="{tip_y:.1f}" '
+            f'stroke="{color}" stroke-width="1.8"/>'
+        )
+        # Small dc cross-bar on each spoke
+        mx = (cx + tip_x) / 2
+        my = (base_y + tip_y) / 2
+        bar_len = 2.5
+        dx = tip_x - cx
+        dy = tip_y - base_y
+        spoke_len = math.sqrt(dx * dx + dy * dy) or 1
+        nx = -dy / spoke_len * bar_len
+        ny = dx / spoke_len * bar_len
+        parts.append(
+            f'<line x1="{mx - nx:.1f}" y1="{my - ny:.1f}" '
+            f'x2="{mx + nx:.1f}" y2="{my + ny:.1f}" '
+            f'stroke="{color}" stroke-width="1.2"/>'
+        )
+    # Arc at top
+    arc_left_x = cx - spread
+    arc_right_x = cx + spread
+    arc_y = cy - half_h
+    cp_y = arc_y - h * 0.12
+    parts.append(
+        f'<path d="M{arc_left_x:.1f},{arc_y:.1f} '
+        f'Q{cx:.1f},{cp_y:.1f} {arc_right_x:.1f},{arc_y:.1f}" '
+        f'fill="none" stroke="{color}" stroke-width="1.2"/>'
+    )
+    parts.append('</g>')
+    return '\n'.join(parts)
+
+
+def svg_enseble_chain(cx: float, cy: float, w: float, h: float,
+                      angle: float, color: str) -> str:
+    """Ensemble chain: vertical column of small ovals."""
+    n_ovals = max(2, round(h / max(w * 0.6, 8)))
+    oval_h = h / n_ovals
+    rx = max(w * 0.25, 3)
+    ry = max(oval_h * 0.35, 2)
+    t = _svg_transform(cx, cy, angle)
+    parts = [f'<g{t}>']
+    for i in range(n_ovals):
+        oy = cy - h / 2 + oval_h * (i + 0.5)
+        parts.append(
+            f'<ellipse cx="{cx:.1f}" cy="{oy:.1f}" rx="{rx:.1f}" ry="{ry:.1f}" '
+            f'fill="none" stroke="{color}" stroke-width="1.2"/>'
+        )
+    parts.append('</g>')
+    return '\n'.join(parts)
+
+
+def svg_noise(cx: float, cy: float, w: float, h: float, angle: float, color: str) -> str:
+    """Noise/annotation: small circle marker."""
+    r = max(min(w, h) * 0.2, 2)
+    t = _svg_transform(cx, cy, angle)
+    return (
+        f'<g{t}>'
+        f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" '
+        f'fill="none" stroke="{color}" stroke-width="1" opacity="0.5"/>'
+        f'</g>'
+    )
+
+
+# Registry mapping svg_type → drawing function
+SVG_DRAWERS = {
+    "chain":          svg_chain,
+    "tall_stitch":    svg_tall_stitch,
+    "cross":          svg_cross,
+    "fan":            svg_fan,
+    "enseble_chain":  svg_enseble_chain,
+    "noise":          svg_noise,
+}
+
+def _n_bars_for_class(cls_name: str) -> int:
+    """Number of diagonal bars for tall stitches."""
+    return {"double": 1, "half_double": 0, "treble": 2, "double treble": 3}.get(cls_name, 1)
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Row Detection & Grouping
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def _group_into_rows(detections: list[Detection], img_h: int) -> list[list[Detection]]:
+    """Group detections into rows by Y coordinate clustering."""
+    if not detections:
+        return []
+    # Sort by center Y
+    dets_with_cy = [(d, d.corners.mean(axis=0)[1]) for d in detections]
+    dets_with_cy.sort(key=lambda x: x[1])
+
+    # Estimate median stitch height for row gap threshold
+    heights = []
+    for d, _ in dets_with_cy:
+        side_a = float(np.linalg.norm(d.corners[0] - d.corners[1]))
+        side_b = float(np.linalg.norm(d.corners[1] - d.corners[2]))
+        heights.append(max(side_a, side_b))
+    median_h = sorted(heights)[len(heights) // 2] if heights else 30
+    row_gap = median_h * 0.5
+
+    rows: list[list[Detection]] = []
+    current_row: list[Detection] = [dets_with_cy[0][0]]
+    current_cy = dets_with_cy[0][1]
+
+    for det, cy in dets_with_cy[1:]:
+        if abs(cy - current_cy) > row_gap:
+            rows.append(current_row)
+            current_row = [det]
+            current_cy = cy
+        else:
+            current_row.append(det)
+            # Running average of row center
+            current_cy = current_cy * 0.8 + cy * 0.2
+
+    if current_row:
+        rows.append(current_row)
+
+    # Sort each row left-to-right
+    for row in rows:
+        row.sort(key=lambda d: d.corners.mean(axis=0)[0])
+
+    return rows
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Detection → SVG Conversion
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def _det_geometry(det: Detection) -> dict:
+    """Extract center, width, height, angle from a detection."""
+    corners = det.corners
+    center = corners.mean(axis=0)
+    w = float(np.linalg.norm(corners[0] - corners[1]))
+    h = float(np.linalg.norm(corners[0] - corners[3]))
+    angle = float(np.degrees(np.arctan2(
+        corners[1, 1] - corners[0, 1],
+        corners[1, 0] - corners[0, 0]
+    )))
+    return {"cx": float(center[0]), "cy": float(center[1]),
+            "w": w, "h": h, "angle": angle}
+
+
+def detections_to_svg(detections: list[Detection], img_w: int, img_h: int,
+                      include_noise: bool = False) -> str:
+    """Convert detection list to a complete SVG string."""
+    parts = [
+        f'<svg width="{img_w}" height="{img_h}" viewBox="0 0 {img_w} {img_h}" '
+        f'xmlns="http://www.w3.org/2000/svg">',
+        f'<rect width="{img_w}" height="{img_h}" fill="#faf8f4"/>',
+    ]
+
+    for det in detections:
+        cfg = CLASS_CONFIG.get(det.cls_name)
+        if cfg is None:
+            continue
+        if cfg["svg_type"] == "noise" and not include_noise:
+            continue
+
+        geom = _det_geometry(det)
+        drawer = SVG_DRAWERS.get(cfg["svg_type"])
+        if drawer is None:
+            continue
+
+        kwargs = {
+            "cx": geom["cx"], "cy": geom["cy"],
+            "w": geom["w"], "h": geom["h"],
+            "angle": geom["angle"], "color": cfg["color"],
+        }
+        if cfg["svg_type"] == "tall_stitch":
+            kwargs["n_bars"] = _n_bars_for_class(det.cls_name)
+
+        parts.append(drawer(**kwargs))
+
+    parts.append('</svg>')
+    return '\n'.join(parts)
+
+
+def detections_to_json(detections: list[Detection], img_w: int, img_h: int) -> list[dict]:
+    """Convert detections to a JSON-serializable list for Claude to use."""
+    results = []
+    rows = _group_into_rows(detections, img_h)
+
+    for row_idx, row in enumerate(rows):
+        for det in row:
+            cfg = CLASS_CONFIG.get(det.cls_name, {})
+            geom = _det_geometry(det)
+            results.append({
+                "class": det.cls_name,
+                "abbreviation": cfg.get("abbr", "??"),
+                "confidence": round(det.confidence, 3),
+                "row": row_idx,
+                "center_x": round(geom["cx"], 1),
+                "center_y": round(geom["cy"], 1),
+                "width": round(geom["w"], 1),
+                "height": round(geom["h"], 1),
+                "angle_deg": round(geom["angle"], 1),
+                "corners": [[round(float(c[0]), 1), round(float(c[1]), 1)]
+                            for c in det.corners],
+            })
+
+    return results
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Summary Statistics
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def _build_summary(detections: list[Detection], img_w: int, img_h: int,
+                   rows: list[list[Detection]]) -> dict:
+    """Build a summary of the chart analysis."""
+    from collections import Counter
+    class_counts = Counter(d.cls_name for d in detections)
+
+    return {
+        "total_stitches": len(detections),
+        "image_size": {"width": img_w, "height": img_h},
+        "num_rows": len(rows),
+        "stitches_per_row": [len(r) for r in rows],
+        "class_counts": dict(class_counts),
+        "classes_found": sorted(class_counts.keys()),
+    }
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MCP Server
+# ═══════════════════════════════════════════════════════════════════════════════
+
 mcp = FastMCP("CrochetDesigner")
 
-# Load your model once
-model = YOLO('/Users/elevchenko/Documents/DataScience/Crochet/runs/obb/train6/weights/best.pt')
+# Lazy model loading (only load when first tool call happens)
+_model = None
+
+def _get_model():
+    global _model
+    if _model is None:
+        from ultralytics import YOLO
+        _model = YOLO(MODEL_PATH)
+    return _model
+
 
 @mcp.tool()
 def analyze_crochet_chart(image_path: str) -> str:
@@ -91,70 +398,62 @@ def analyze_crochet_chart(image_path: str) -> str:
     Args:
         image_path: The local path to the crochet chart image.
     """
-    # Run your existing Matplotlib SVG drawing logic here
-    # 3. Main Execution
-    trained_model = model
-    results = trained_model.predict(image_path, conf=0.25, verbose=False)
-    res = results[0]
+    model = _get_model()
+    image = cv.imread(image_path)
+    if image is None:
+        return json.dumps({"error": f"Could not read image: {image_path}"})
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 10))
+    img_h, img_w = image.shape[:2]
 
-    # Ax1: Detection Boxes
-    img_rgb = cv.cvtColor(res.orig_img, cv.COLOR_BGR2RGB)
-    ax1.imshow(img_rgb)
-    ax1.set_title("YOLO OBB Detections")
+    # Run adaptive tiled inference
+    detections = predict_adaptive(
+        model, image,
+        target_stitch_px=50,
+        tile_size=640,
+        overlap=0.25,
+        conf=0.25,
+        iou_threshold=0.45,
+    )
 
-    # Ax2: Clean SVG Reconstruction
-    ax2.set_facecolor('white')
-    ax2.set_xlim(0, res.orig_img.shape[1])
-    ax2.set_ylim(res.orig_img.shape[0], 0) # Maintain image coordinate system
-    ax2.set_title("Reconstructed SVG Scheme")
+    # Group into rows
+    rows = _group_into_rows(detections, img_h)
 
-    if len(res.obb) > 0:
-        for box in res.obb:
-            # xyxyxyxy shape is (1, 4, 2)
-            corners = box.xyxyxyxy.cpu().numpy().reshape(4, 2)
-            cls_id = int(box.cls[0])
-            full_name = res.names[cls_id]
-            
-            config = CLASS_CONFIG.get(full_name, {"abbr": "??", "color": DEFAULT_COLOR})
-            color = config["color"]
-            abbr = config["abbr"]
+    # Build all outputs
+    summary = _build_summary(detections, img_w, img_h, rows)
+    det_json = detections_to_json(detections, img_w, img_h)
+    svg_str = detections_to_svg(detections, img_w, img_h, include_noise=False)
 
-            # --- Ax1 Drawing ---
-            closed_corners = np.vstack([corners, corners[0]])
-            ax1.plot(closed_corners[:, 0], closed_corners[:, 1], color=color, linewidth=2)
-            ax1.text(corners[0, 0], corners[0, 1] - 5, abbr, color='white', fontsize=8, 
-                    fontweight='bold', bbox=dict(facecolor=color, edgecolor='none', alpha=0.7))
+    # Build text representation of rows for Claude's understanding
+    row_descriptions = []
+    for i, row in enumerate(rows):
+        stitch_seq = []
+        for det in row:
+            cfg = CLASS_CONFIG.get(det.cls_name, {})
+            abbr = cfg.get("abbr", "??")
+            stitch_seq.append(abbr)
+        row_descriptions.append(f"Row {i + 1}: {', '.join(stitch_seq)}")
 
-            # --- Ax2 Drawing Logic ---
-            center = corners.mean(axis=0)
-            width = np.linalg.norm(corners[0] - corners[1])
-            height = np.linalg.norm(corners[0] - corners[3])
-            
-            # Calculate angle (the angle of the top/bottom edge)
-            angle = np.degrees(np.arctan2(corners[1, 1] - corners[0, 1], corners[1, 0] - corners[0, 0]))
-            
-            draw_svg_icon(ax2, full_name, center[0], center[1], width, height, angle, color)
+    result = {
+        "summary": summary,
+        "row_descriptions": row_descriptions,
+        "detections": det_json,
+        "svg": svg_str,
+        "legend": {name: {"abbreviation": cfg["abbr"], "color": cfg["color"]}
+                   for name, cfg in CLASS_CONFIG.items()
+                   if name in summary.get("classes_found", [])},
+        "notes": (
+            "The SVG above is a direct reconstruction from YOLO OBB detections. "
+            "You can embed it in HTML, scale it, or use the detection data to "
+            "redraw the chart in any style. Each detection includes row number, "
+            "position, rotation angle, and bounding box corners. "
+            "The 'row_descriptions' field gives a shorthand stitch sequence per row. "
+            "Noise annotations (row numbers, arrows) are excluded from the SVG "
+            "but included in detections if you need them."
+        ),
+    }
 
-    ax1.axis('off')
-    ax2.axis('off')
-    plt.tight_layout()
+    return json.dumps(result, indent=2)
 
-    # --- THE MAGIC PART: Return image to Claude ---
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png', bbox_inches='tight', pad_inches=0)
-    plt.close(fig)
-    buf.seek(0)
-    image_data = buf.read()
-    
-    # 3. Use the explicit 'content' return style to avoid Pydantic validation errors
-    from mcp.types import TextContent, ImageContent
-    
-    return [
-        TextContent(type="text", text=f"I found {len(res.obb)} stitches in this chart."),
-        ImageContent(type="image", data=image_data, mimeType="image/png")
-    ]
 
 if __name__ == "__main__":
     mcp.run()

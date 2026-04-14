@@ -1,0 +1,21 @@
+# CrochetPARADE pattern generated from image detection
+# 16 rows, 884 total detections
+# Image size: 1356 × 1276
+
+6ch,turn
+2hdc,2dc,turn
+ch,tr,hdc,2ch,hdc,ch,2hdc,tr,hdc,ch,hdc,2ch,hdc,ch,hdc,3ch,3hdc,2ch,2hdc,3ch,hdc,ch,2hdc,ch,hdc,ch,tr,hdc,ch,tr,ch,hdc,ch,hdc,ch,tr,hdc,ch,hdc,2ch,hdc,ch,hdc,ch,hdc,tr,hdc,2ch,hdc,ch,2hdc,2ch,hdc,ch,2hdc,ch,2hdc,3ch,2hdc,tr,ch,hdc,ch,hdc,ch,3hdc,ch,hdc,2ch,hdc,tr,ch,turn
+hdc,tr,hdc,ch,2hdc,sc,2ch,hdc,ch,hdc,ch,4hdc,ch,hdc,2sc,3hdc,2sc,6hdc,sc,8hdc,sc,hdc,sc,15hdc,ch,hdc,ch,3hdc,sc,2hdc,2ch,3hdc,3ch,hdc,ch,turn
+hdc,2ch,3hdc,2ch,3tr,6hdc,2ch,tr,2hdc,sc,3hdc,ch,hdc,3ch,turn
+4hdc,2ch,hdc,sc,2hdc,ch,24hdc,ch,2hdc,ch,sc,2hdc,3ch,2sc,3hdc,turn
+hdc,ch,3sc,2hdc,sc,4hdc,sc,3hdc,sc,2hdc,2ch,hdc,ch,2hdc,3ch,hdc,ch,hdc,2ch,hdc,2ch,2hdc,2ch,3hdc,3ch,3hdc,ch,tr,ch,hdc,4sc,4hdc,tr,hdc,sc,3hdc,sc,ch,2hdc,ch,turn
+ch,13hdc,9ch,4hdc,2sc,3hdc,3sc,2hdc,2sc,12hdc,ch,8hdc,sc,3hdc,2sc,3hdc,3sc,6hdc,sc,2hdc,2sc,3hdc,sc,hdc,7ch,5hdc,ch,hdc,ch,sc,hdc,sc,hdc,sc,2hdc,sc,hdc,2sc,hdc,sc,hdc,sc,ch,4hdc,sc,hdc,ch,hdc,ch,hdc,5ch,hdc,2sc,2hdc,2ch,hdc,sc,5hdc,ch,2hdc,ch,hdc,ch,3hdc,tr,hdc,2ch,hdc,ch,sc,3ch,hdc,2ch,4hdc,sc,hdc,tr,3hdc,2ch,2hdc,3ch,sc,ch,hdc,ch,sc,tr,ch,hdc,tr,3hdc,ch,3hdc,ch,hdc,sc,hdc,sc,hdc,sc,hdc,2sc,ch,hdc,sc,7ch,hdc,2ch,2sc,5hdc,ch,hdc,9ch,hdc,ch,8hdc,25sc,4hdc,ch,6sc,hdc,sc,7hdc,sc,8hdc,sc,hdc,2sc,hdc,sc,hdc,2sc,5hdc,ch,9hdc,ch,turn
+hdc,2ch,2hdc,3ch,23hdc,5ch,sc,3hdc,turn
+ch,hdc,2ch,3hdc,2tr,5hdc,2tr,ch,2hdc,turn
+sc,hdc,ch,tr,14hdc,ch,tr,turn
+3hdc,ch,hdc,3ch,2hdc,ch,4hdc,ch,hdc,ch,hdc,ch,15hdc,tr,10hdc,ch,hdc,ch,hdc,ch,hdc,ch,hdc,ch,hdc,3ch,turn
+ch,hdc,ch,hdc,2ch,hdc,6ch,hdc,2ch,hdc,ch,2hdc,11ch,hdc,5ch,2tr,hdc,ch,hdc,tr,ch,hdc,2ch,tr,3ch,hdc,ch,2tr,ch,turn
+2*[2ch],ch
+3ch
+8*[2dc],dc,turn
+dc

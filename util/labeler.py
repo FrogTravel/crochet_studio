@@ -3,15 +3,16 @@ labeler.py
 
 Interactive keyboard-driven labelling tool for symbol crops.
 
-Key map (default):
-    w - ensemble wrong (several different types of stitch wrongly grouped together, e.g. chain + single)
-    e - ensemble_chain (several chain stitches together, often at the start of a pattern)
-    c → chain
-    t → treble crochet (t with two bars)
-    d → double crochet (t with one bar)
-    s - single crochet (slip stitch, t with no bars)
-    f - fan (multiple stitches from one base, e.g. 3 dc in same stitch)
-    n → noise
+Key map (default) — matches data/project_yolo_obb/data.yaml (9 classes):
+    c - chain                                                                             [id 0]
+    d - double crochet (t with one bar)                                                   [id 1]
+    r - double treble crochet (t with three bars)                                         [id 2]
+    e - enseble_chain (several chain stitches together, often at the start of a pattern)  [id 3]
+    f - fan (multiple stitches from one base, e.g. 3 dc in same stitch)                   [id 4]
+    h - half_double                                                                       [id 5]
+    n - noise                                                                             [id 6]
+    s - single crochet (t with no bars)                                                   [id 7]
+    t - treble crochet (t with two bars)                                                  [id 8]
     Space / → → skip (leave in unlabeled, move to next)
     u       → undo last assignment
     q       → quit (saves progress)
@@ -34,15 +35,15 @@ import numpy as np
 
 
 DEFAULT_SYMBOL_KEYS: dict[str, str] = {
-    "h": "half_double",
-    "w": "ensemble_wrong",
-    "e": "ensemble_chain",
-    "c": "chain",
-    "s": "single",
-    "d": "double",
-    "t": "treble",
-    "f": "fan",
-    "n": "noise",
+    "c": "chain",           # id 0
+    "d": "double",          # id 1
+    "r": "double treble",   # id 2
+    "e": "enseble_chain",   # id 3
+    "f": "fan",             # id 4
+    "h": "half_double",     # id 5
+    "n": "noise",           # id 6
+    "s": "single",          # id 7
+    "t": "treble",          # id 8
 }
 
 

@@ -201,9 +201,9 @@ def estimate_stitch_size(
 def predict_adaptive(
     model,
     image: np.ndarray,
-    target_stitch_px: int = 50,
+    target_stitch_px: int = 100,
     tile_size: int = 640,
-    overlap: float = 0.2,
+    overlap: float = 0.25,
     conf: float = 0.25,
     iou_threshold: float = 0.5,
 ) -> list[Detection]:

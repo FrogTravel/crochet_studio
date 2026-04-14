@@ -406,9 +406,11 @@ def analyze_crochet_chart(image_path: str) -> str:
     img_h, img_w = image.shape[:2]
 
     # Run adaptive tiled inference
+    # target_stitch_px=100 makes each YOLO tile show a more zoomed-in region
+    # so stitches are big enough (~100 px) for reliable detection.
     detections = predict_adaptive(
         model, image,
-        target_stitch_px=50,
+        target_stitch_px=100,
         tile_size=640,
         overlap=0.25,
         conf=0.25,

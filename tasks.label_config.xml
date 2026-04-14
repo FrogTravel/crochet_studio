@@ -1,0 +1,16 @@
+<View>
+  <Image name="image" value="$image"/>
+
+  <Header value="RectangleLabels"/>
+  <RectangleLabels name="label" toName="image">
+    <Label value="chain" background="rgba(218, 1, 238, 1)"/>
+    <Label value="double" background="rgba(0, 255, 0, 1)"/>
+    <Label value="double treble" background="rgba(1, 146, 243, 1)"/>
+    <Label value="enseble_chain" background="rgba(241, 135, 0, 1)"/>
+    <Label value="fan" background="rgba(12, 0, 184, 1)"/>
+    <Label value="half_double" background="rgba(72, 124, 73, 1)"/>
+    <Label value="noise" background="rgba(187, 1, 37, 1)"/>
+    <Label value="single" background="rgba(166, 250, 86, 1)"/>
+    <Label value="treble" background="rgba(178, 135, 216, 1)"/>
+  </RectangleLabels>
+</View>

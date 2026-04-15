@@ -187,6 +187,32 @@ def _figsize_and_dpi(image: np.ndarray, panel_h_in: float = 8.0,
     return (w_in, h_in), dpi
 
 
+# Icons whose natural orientation puts the long axis HORIZONTAL (e.g. the
+# wide oval of a chain). All other icons draw their long axis VERTICALLY
+# (the stem of trebles/doubles, the column of ensemble chains, the X of
+# single crochet, etc.).
+_HORIZONTAL_LONG_AXIS_LABELS = {"chain"}
+
+
+def _orient_icon_axes(corners: np.ndarray) -> tuple[float, float, float]:
+    """Return ``(short_len, long_len, long_angle_deg)`` for an OBB.
+
+    Picks whichever of the two edges from corner 0 is longer as the long
+    axis — YOLO's OBB corner ordering isn't guaranteed, so we can't just
+    assume ``corners[0]→corners[1]`` is the bar (short) side.
+    """
+    side01 = corners[1] - corners[0]
+    side03 = corners[3] - corners[0]
+    len01 = float(np.linalg.norm(side01))
+    len03 = float(np.linalg.norm(side03))
+    if len03 >= len01:
+        long_vec, long_len, short_len = side03, len03, len01
+    else:
+        long_vec, long_len, short_len = side01, len01, len03
+    long_angle = float(math.degrees(math.atan2(long_vec[1], long_vec[0])))
+    return short_len, long_len, long_angle
+
+
 def draw_scheme(ax, image: np.ndarray, detections: list[Detection],
                 shrink: float = ICON_SHRINK,
                 color: str = SCHEME_COLOR,
@@ -203,14 +229,27 @@ def draw_scheme(ax, image: np.ndarray, detections: list[Detection],
     for det in detections:
         corners = det.corners
         center = corners.mean(axis=0)
-        width = float(np.linalg.norm(corners[0] - corners[1])) * shrink
-        height = float(np.linalg.norm(corners[0] - corners[3])) * shrink
-        angle = float(np.degrees(np.arctan2(
-            corners[1, 1] - corners[0, 1],
-            corners[1, 0] - corners[0, 0],
-        )))
-        draw_svg_icon(ax, det.cls_name, center[0], center[1], width, height,
-                      angle, color, lw=effective_lw)
+        short_len, long_len, long_angle = _orient_icon_axes(corners)
+
+        # Pick icon-space dimensions so the long OBB axis maps to whichever
+        # icon-space axis the symbol's "principal" stroke is drawn along.
+        if det.cls_name in _HORIZONTAL_LONG_AXIS_LABELS:
+            # Icon natural: long axis is horizontal (chain ellipse).
+            w_icon = long_len * shrink
+            h_icon = short_len * shrink
+            angle_icon = long_angle
+        else:
+            # Icon natural: long axis is vertical (T-stem, ensemble column, X).
+            # The icon is drawn with its stem along +Y and the bar at y-h/2.
+            # Add 90° so the bar ends up on the side that ``long_vec`` points
+            # toward — matches YOLO's OBB orientation for crochet stitches
+            # where the "top of the T" is the end we want the bar on.
+            w_icon = short_len * shrink
+            h_icon = long_len * shrink
+            angle_icon = long_angle + 90.0
+
+        draw_svg_icon(ax, det.cls_name, center[0], center[1],
+                      w_icon, h_icon, angle_icon, color, lw=effective_lw)
     ax.axis("off")
 
 

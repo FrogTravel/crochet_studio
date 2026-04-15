@@ -104,9 +104,13 @@ if not run_clicked:
 st.markdown("## Step 2 — Size-estimation pass (downsampled)")
 st.markdown(
     "We downsample the image so its longest side matches the YOLO tile size, "
-    "run a low-confidence pass, and take the **max** of each OBB's short axis. "
-    "This answers *how big is the biggest stitch in the image?* — if that "
-    "already lands around the target size, tiling is skipped entirely."
+    "run a low-confidence pass, and take the **median of each OBB's long "
+    "axis** (the stem length for T-shaped stitches). This answers *how tall "
+    "is a typical stitch in the image?* — if that already lands around the "
+    "target, tiling is skipped entirely. Using the long axis matters (the "
+    "short axis of a treble is just the bar width), and using the **median** "
+    "rather than the max keeps the estimate stable on dense small-stitch "
+    "images where a few low-confidence boxes can be spuriously large."
 )
 
 tile_size = settings["tile_size"]
@@ -123,16 +127,17 @@ with st.spinner("Running low-confidence estimation pass…"):
                               verbose=False)[0]
     estim_seconds = time.time() - t0
 
-short_axes: list[float] = []
+long_axes: list[float] = []
 if estim_res.obb is not None:
     for box in estim_res.obb:
         corners = box.xyxyxyxy.cpu().numpy().reshape(4, 2)
         side_a = float(np.linalg.norm(corners[0] - corners[1]))
         side_b = float(np.linalg.norm(corners[1] - corners[2]))
-        short_axes.append(min(side_a, side_b))
+        long_axes.append(max(side_a, side_b))
 
-max_short_downsampled = max(short_axes) if short_axes else 0.0
-estimated_h_px = max_short_downsampled / scale if scale > 0 else None
+median_long_downsampled = float(np.median(long_axes)) if long_axes else 0.0
+max_long_downsampled = max(long_axes) if long_axes else 0.0
+estimated_h_px = median_long_downsampled / scale if scale > 0 else None
 
 col_a, col_b = st.columns([2, 1])
 with col_a:
@@ -151,40 +156,41 @@ with col_a:
     plt.tight_layout(pad=0)
     st.image(fig_to_pil(fig, pad_inches=0.0), use_container_width=True,
              caption=f"Downsampled {small_bgr.shape[1]}×{small_bgr.shape[0]} "
-                     f"(scale {scale:.3f}) — {len(short_axes)} low-conf detections")
+                     f"(scale {scale:.3f}) — {len(long_axes)} low-conf detections")
 
 with col_b:
     st.metric("Estimate seconds", f"{estim_seconds:.2f}")
-    st.metric("Low-conf detections", len(short_axes))
+    st.metric("Low-conf detections", len(long_axes))
     st.metric(
-        "Max short-axis (downsampled)",
-        f"{max_short_downsampled:.1f}px" if short_axes else "—",
+        "Median long-axis (downsampled)",
+        f"{median_long_downsampled:.1f}px" if long_axes else "—",
     )
     st.metric(
         "→ estimated stitch height",
         f"{estimated_h_px:.1f}px" if estimated_h_px else "—",
     )
 
-if short_axes:
-    st.markdown("**Distribution of short-axis lengths (downsampled pixels)**")
+if long_axes:
+    st.markdown("**Distribution of long-axis lengths (downsampled pixels)**")
     fig_h, ax_h = plt.subplots(figsize=(8, 2.5))
-    ax_h.hist(short_axes, bins=20, color="#4c72b0", edgecolor="white")
-    ax_h.axvline(max_short_downsampled, color="#dd8452", linewidth=2,
-                 label=f"max = {max_short_downsampled:.1f}px")
-    if len(short_axes) > 1:
-        ax_h.axvline(float(np.median(short_axes)), color="#55a868",
-                     linewidth=2, linestyle="--",
-                     label=f"median = {np.median(short_axes):.1f}px")
-    ax_h.set_xlabel("Short-axis length (px, downsampled)")
+    ax_h.hist(long_axes, bins=20, color="#4c72b0", edgecolor="white")
+    ax_h.axvline(median_long_downsampled, color="#55a868", linewidth=2,
+                 label=f"median = {median_long_downsampled:.1f}px (used)")
+    if len(long_axes) > 1:
+        ax_h.axvline(max_long_downsampled, color="#dd8452", linewidth=2,
+                     linestyle="--",
+                     label=f"max = {max_long_downsampled:.1f}px")
+    ax_h.set_xlabel("Long-axis length (px, downsampled)")
     ax_h.set_ylabel("Count")
     ax_h.legend()
     st.pyplot(fig_h)
     plt.close(fig_h)
     st.caption(
-        "We deliberately use **max** instead of **median** here — see the "
-        "distribution above. On images with mostly large fans plus a few "
-        "small chain fillers, the median would under-estimate stitch size "
-        "and trigger unnecessary tiling."
+        "We use the **median** of the **long** axes. The long axis is the "
+        "stem length for T-shaped stitches (i.e. the actual stitch height). "
+        "Median — rather than max — keeps the estimate stable on dense "
+        "small-stitch images where a handful of low-confidence boxes can be "
+        "spuriously large."
     )
 
 

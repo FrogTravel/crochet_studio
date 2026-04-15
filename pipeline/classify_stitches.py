@@ -196,9 +196,14 @@ def estimate_stitch_size(model, image: np.ndarray, tile_size: int = 640,
         corners = box.xyxyxyxy.cpu().numpy().reshape(4, 2)
         side_a = np.linalg.norm(corners[0] - corners[1])
         side_b = np.linalg.norm(corners[1] - corners[2])
-        sizes.append(float(min(side_a, side_b)))  # short axis ≈ stitch height
+        # Long axis — for T-shaped stitches this is the stem length
+        # (the actual "stitch height"); the short axis is just the bar
+        # width and would make tall stitches look tiny.
+        sizes.append(float(max(side_a, side_b)))
 
-    return float(np.max(sizes)) / scale
+    # Median across detections: robust to a handful of spuriously large
+    # low-conf boxes on dense small-stitch images.
+    return float(np.median(sizes)) / scale
 
 
 def predict_adaptive(model, image: np.ndarray, target_stitch_px: int = 100,
@@ -427,13 +432,37 @@ def classify_stitches(
         )
 
         center = corners.mean(axis=0)
-        width = float(np.linalg.norm(corners[0] - corners[1]))
-        height = float(np.linalg.norm(corners[0] - corners[3]))
+        # Pick whichever OBB edge is longer as the principal (long) axis —
+        # YOLO's corner ordering isn't guaranteed, so we can't assume
+        # corners[0]→corners[1] is always the bar (short) side. Without
+        # this, T-stems can end up drawn horizontally on some detections.
+        side01 = corners[1] - corners[0]
+        side03 = corners[3] - corners[0]
+        len01 = float(np.linalg.norm(side01))
+        len03 = float(np.linalg.norm(side03))
+        if len03 >= len01:
+            long_vec, long_len, short_len = side03, len03, len01
+        else:
+            long_vec, long_len, short_len = side01, len01, len03
+        long_angle = float(np.degrees(np.arctan2(long_vec[1], long_vec[0])))
+
+        if det.cls_name == "chain":
+            # Chain ovals are naturally horizontal: long axis = oval major.
+            w_icon, h_icon, angle_icon = long_len, short_len, long_angle
+        else:
+            # Trebles/doubles/etc.: stem (icon's +Y) follows the long axis.
+            # +90° puts the bar on the side ``long_vec`` points toward.
+            w_icon, h_icon, angle_icon = short_len, long_len, long_angle + 90.0
+
+        # Backwards-compat record fields keep the raw OBB extents.
+        width = len01
+        height = len03
         angle = float(np.degrees(np.arctan2(
             corners[1, 1] - corners[0, 1],
             corners[1, 0] - corners[0, 0],
         )))
-        draw_svg_icon(ax2, det.cls_name, center[0], center[1], width, height, angle, color)
+        draw_svg_icon(ax2, det.cls_name, center[0], center[1],
+                      w_icon, h_icon, angle_icon, color)
 
         records.append({
             "class": det.cls_name,

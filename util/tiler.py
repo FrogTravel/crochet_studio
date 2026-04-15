@@ -210,9 +210,18 @@ def estimate_stitch_size(
         corners = box.xyxyxyxy.cpu().numpy().reshape(4, 2)
         side_a = float(np.linalg.norm(corners[0] - corners[1]))
         side_b = float(np.linalg.norm(corners[1] - corners[2]))
-        sizes.append(min(side_a, side_b))  # short axis ~ stitch height
+        # Use the LONG axis — for T-shaped stitches that's the stem length
+        # (the "stitch height" in crochet terms). The short axis is just
+        # the bar width and would cause tall/elongated stitches to be
+        # dramatically under-estimated.
+        sizes.append(max(side_a, side_b))
 
-    return float(np.max(sizes)) / scale
+    # Median (not max): robust to a couple of spuriously large low-conf
+    # detections on dense images full of small stitches. Max tended to
+    # over-estimate stitch size on those and skip tiling when it was
+    # actually needed; median tracks the typical stitch size more
+    # reliably across both "giant-fan" and "tiny-stitch" images.
+    return float(np.median(sizes)) / scale
 
 
 def predict_adaptive(

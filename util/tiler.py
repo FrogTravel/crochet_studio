@@ -171,9 +171,26 @@ def estimate_stitch_size(
     conf: float = 0.15,
 ) -> float | None:
     """
-    Quick low-confidence pass on a downsampled image to estimate median stitch height.
-    The short side of each OBB box is used (robust to elongated symbols like chains).
-    Returns stitch height in original image pixels, or None if nothing is detected.
+    Quick low-confidence pass on a downsampled image to estimate stitch size.
+
+    We use the *maximum* OBB short axis across detections rather than the
+    median. Rationale: when an image contains both big stitches (fans,
+    trebles) and many small fillers (chain ovals, '+' marks), the median
+    gets pulled toward the small symbols, which causes
+    ``predict_adaptive`` to over-tile and chop the big stitches across
+    tiles. Using the max answers "how big is the biggest stitch here?" —
+    if that already fits well, we skip tiling entirely.
+
+    Args:
+        model:       Loaded YOLO model.
+        image:       BGR image as a numpy array.
+        tile_size:   YOLO input size, used to downsample for the
+                     estimation pass.
+        conf:        Low confidence threshold for the estimation pass.
+
+    Returns:
+        Estimated stitch short-side size (max across detections), in
+        original-image pixels, or None if nothing was detected.
     """
     h, w = image.shape[:2]
     scale = tile_size / max(h, w)
@@ -195,7 +212,7 @@ def estimate_stitch_size(
         side_b = float(np.linalg.norm(corners[1] - corners[2]))
         sizes.append(min(side_a, side_b))  # short axis ~ stitch height
 
-    return float(np.median(sizes)) / scale
+    return float(np.max(sizes)) / scale
 
 
 def predict_adaptive(

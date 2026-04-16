@@ -1,0 +1,10 @@
+Amigurumi - Crochet a cute teddy bear amigurumi, around 15 cm tall
+==================================================================
+
+R1: 6 sc in magic ring = 6
+R2: 6 sc = 6
+R3: (5 sc, inc) x1 = 7
+R4: (5 sc, dec) x1 = 6
+R5: 6 sc = 6
+
+Fasten off. Weave in ends. Total rows: 5.

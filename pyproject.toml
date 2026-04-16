@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crochet"
+version = "0.1.0"
+description = "Crochet stitch detection and scheme reconstruction (YOLOv8n OBB + classical CV + MCP server)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Ekaterina Levchenko", email = "katya.levchenko.98@gmail.com" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "numpy>=1.24",
+    "opencv-python>=4.8",
+    "matplotlib>=3.7",
+    "Pillow>=10.0",
+    "scikit-image>=0.21",
+    "scikit-learn>=1.3",
+    "joblib>=1.3",
+    "ultralytics>=8.1",
+    "streamlit>=1.30",
+]
+
+[project.optional-dependencies]
+gemini = ["google-genai>=1.0"]
+mcp = ["mcp>=0.1"]
+dev = [
+    "pytest>=7.4",
+    "ruff>=0.4",
+    "black>=24.0",
+    "mypy>=1.7",
+]
+
+[project.scripts]
+crochet-pipeline = "crochet.pipeline:run_pipeline"
+crochet-mcp = "crochet.mcp_server:main"
+
+[tool.setuptools.packages.find]
+include = ["crochet*"]
+exclude = ["notebooks*", "scripts*", "tests*", "data*", "runs*", "dataset*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["E501"]  # line-length handled by formatter
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

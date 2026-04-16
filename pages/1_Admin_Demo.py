@@ -1,10 +1,10 @@
-"""Admin / presentation page — walks through every stage of the pipeline.
+"""Admin / presentation page — walks through every pipeline stage.
 
-Every box below corresponds to one step of the inference pipeline, shown
-in order. Useful for internal debugging and for demoing the system end
-to end to stakeholders.
+Every box below maps to one step of the inference pipeline, shown in
+order. Useful for internal debugging and for demoing the system end to
+end to stakeholders.
 
-Run the whole multi-page app from the Crochet root:
+Run the multi-page app from the repo root::
 
     streamlit run app.py
 
@@ -15,34 +15,27 @@ from __future__ import annotations
 
 import io
 import json
-import math
 import time
 
 import cv2 as cv
 import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
-from PIL import Image
 
-from util.tiler import estimate_stitch_size
-
-from pipeline.ui import (
-    CLASS_CONFIG,
-    DEFAULT_COLOR,
-    SCHEME_COLOR,
-    class_counts,
-    detections_to_json,
-    draw_detection_overlay,
-    draw_scheme,
-    ensure_input_state,
+from crochet.config import CLASS_CONFIG, DEFAULT_COLOR
+from crochet.detection import predict_adaptive_with_progress
+from crochet.json_export import class_counts, detections_to_json
+from crochet.rendering import (
     fig_to_pil,
-    input_source_block,
     linewidth_for_count,
-    load_crochet_model,
-    predict_adaptive_with_progress,
     render_detection_image,
     render_scheme_image,
     render_tile_grid_image,
+)
+from crochet.streamlit_ui import (
+    ensure_input_state,
+    input_source_block,
+    load_crochet_model,
     sidebar_inference_controls,
 )
 
@@ -92,25 +85,20 @@ with col_meta:
     st.write("**Source**")
     st.json(st.session_state.input_source or {})
 
-run_clicked = st.button("🚀 Run full pipeline", type="primary")
-
-if not run_clicked:
+if not st.button("🚀 Run full pipeline", type="primary"):
     st.stop()
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Step 2 — Size estimation pass
+# Step 2 — Size-estimation pass
 # ═══════════════════════════════════════════════════════════════════════════
 st.markdown("## Step 2 — Size-estimation pass (downsampled)")
 st.markdown(
     "We downsample the image so its longest side matches the YOLO tile size, "
     "run a low-confidence pass, and take the **median of each OBB's long "
     "axis** (the stem length for T-shaped stitches). This answers *how tall "
-    "is a typical stitch in the image?* — if that already lands around the "
-    "target, tiling is skipped entirely. Using the long axis matters (the "
-    "short axis of a treble is just the bar width), and using the **median** "
-    "rather than the max keeps the estimate stable on dense small-stitch "
-    "images where a few low-confidence boxes can be spuriously large."
+    "is a typical stitch in the image?* — if that already lands near the "
+    "target, tiling is skipped entirely."
 )
 
 tile_size = settings["tile_size"]
@@ -141,22 +129,26 @@ estimated_h_px = median_long_downsampled / scale if scale > 0 else None
 
 col_a, col_b = st.columns([2, 1])
 with col_a:
-    fig, ax = plt.subplots(figsize=(8, 8 * (small_bgr.shape[0] / max(small_bgr.shape[1], 1))))
+    fig, ax = plt.subplots(
+        figsize=(8, 8 * (small_bgr.shape[0] / max(small_bgr.shape[1], 1))),
+    )
     ax.imshow(cv.cvtColor(small_bgr, cv.COLOR_BGR2RGB))
     if estim_res.obb is not None:
         for box in estim_res.obb:
             corners = box.xyxyxyxy.cpu().numpy().reshape(4, 2)
             cls_id = int(box.cls[0])
             cls_name = estim_res.names[cls_id]
-            config = CLASS_CONFIG.get(cls_name, {"color": DEFAULT_COLOR})
+            cfg = CLASS_CONFIG.get(cls_name, {"color": DEFAULT_COLOR})
             closed = np.vstack([corners, corners[0]])
-            ax.plot(closed[:, 0], closed[:, 1], color=config["color"], lw=1.5)
+            ax.plot(closed[:, 0], closed[:, 1], color=cfg["color"], lw=1.5)
     ax.set_aspect("equal")
     ax.axis("off")
     plt.tight_layout(pad=0)
-    st.image(fig_to_pil(fig, pad_inches=0.0), use_container_width=True,
-             caption=f"Downsampled {small_bgr.shape[1]}×{small_bgr.shape[0]} "
-                     f"(scale {scale:.3f}) — {len(long_axes)} low-conf detections")
+    st.image(
+        fig_to_pil(fig, pad_inches=0.0), use_container_width=True,
+        caption=f"Downsampled {small_bgr.shape[1]}×{small_bgr.shape[0]} "
+                f"(scale {scale:.3f}) — {len(long_axes)} low-conf detections",
+    )
 
 with col_b:
     st.metric("Estimate seconds", f"{estim_seconds:.2f}")
@@ -185,13 +177,6 @@ if long_axes:
     ax_h.legend()
     st.pyplot(fig_h)
     plt.close(fig_h)
-    st.caption(
-        "We use the **median** of the **long** axes. The long axis is the "
-        "stem length for T-shaped stitches (i.e. the actual stitch height). "
-        "Median — rather than max — keeps the estimate stable on dense "
-        "small-stitch images where a handful of low-confidence boxes can be "
-        "spuriously large."
-    )
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -202,14 +187,16 @@ st.markdown(
     "From the estimated stitch size we compute the **effective tile size** "
     "in *original-image pixels* so that stitches appear at "
     f"`target_stitch_px = {settings['target_stitch_px']}` inside each YOLO "
-    f"input. If that effective tile already covers the whole image, we "
-    "do a single-shot forward pass. Otherwise we lay out a grid with the "
+    "input. If the effective tile already covers the whole image, we do a "
+    "single-shot forward pass. Otherwise we lay out a grid with the "
     f"configured overlap ({settings['overlap']:.0%})."
 )
 
 if estimated_h_px and estimated_h_px > 0:
-    effective_tile = int(settings["tile_size"] * estimated_h_px / settings["target_stitch_px"])
-    effective_tile = max(effective_tile, 64)
+    effective_tile = max(
+        int(settings["tile_size"] * estimated_h_px / settings["target_stitch_px"]),
+        64,
+    )
 else:
     effective_tile = settings["tile_size"]
 
@@ -218,15 +205,13 @@ single_shot = effective_tile >= max(h, w)
 m1, m2, m3, m4 = st.columns(4)
 m1.metric("tile_size (YOLO input)", settings["tile_size"])
 m2.metric("target_stitch_px", settings["target_stitch_px"])
-m3.metric(
-    "effective tile (px in src)",
-    f"{effective_tile}",
-)
+m3.metric("effective tile (px in src)", f"{effective_tile}")
 m4.metric("Mode", "single-shot" if single_shot else "tiled")
 
 st.code(
-    f"effective_tile = {settings['tile_size']} × {estimated_h_px:.1f} / "
-    f"{settings['target_stitch_px']} = {effective_tile}  "
+    f"effective_tile = {settings['tile_size']} × "
+    f"{estimated_h_px or 0:.1f} / {settings['target_stitch_px']} = "
+    f"{effective_tile}  "
     f"{'≥' if single_shot else '<'} max(h, w) = {max(h, w)}",
     language="text",
 )
@@ -238,8 +223,8 @@ st.code(
 st.markdown("## Step 4 — Per-tile inference")
 st.markdown(
     "Each tile is forwarded through the model at `tile_size` resolution. "
-    "Detections are translated back into original-image coordinates; we "
-    "keep them per-tile here so you can inspect any individual crop."
+    "Detections are translated back into original-image coordinates; we keep "
+    "them per-tile here so you can inspect any individual crop."
 )
 
 phase_log = st.empty()
@@ -301,18 +286,17 @@ if tile_records and show_tile_gallery:
         row = shown[row_start:row_start + cols_per_row]
         cols = st.columns(len(row))
         for col, (x1, y1, tile_bgr, tile_dets) in zip(cols, row):
-            # Draw detections relative to the tile origin
             fig, ax = plt.subplots(figsize=(4, 4))
             ax.imshow(cv.cvtColor(tile_bgr, cv.COLOR_BGR2RGB))
             for det in tile_dets:
                 corners = det.corners.copy()
                 corners[:, 0] -= x1
                 corners[:, 1] -= y1
-                config = CLASS_CONFIG.get(
+                cfg = CLASS_CONFIG.get(
                     det.cls_name, {"abbr": "??", "color": DEFAULT_COLOR},
                 )
                 closed = np.vstack([corners, corners[0]])
-                ax.plot(closed[:, 0], closed[:, 1], color=config["color"], lw=1.5)
+                ax.plot(closed[:, 0], closed[:, 1], color=cfg["color"], lw=1.5)
             ax.set_aspect("equal")
             ax.axis("off")
             plt.tight_layout(pad=0)
@@ -326,9 +310,9 @@ if tile_records and show_tile_gallery:
 # ═══════════════════════════════════════════════════════════════════════════
 st.markdown("## Step 5 — Non-maximum suppression")
 st.markdown(
-    "Detections from overlapping tiles are deduplicated class-by-class. "
-    "We keep the highest-confidence box whenever two boxes of the same "
-    f"class have IoU ≥ `{settings['iou']}`."
+    "Detections from overlapping tiles are deduplicated class-by-class. We "
+    "keep the highest-confidence box whenever two boxes of the same class "
+    f"have IoU ≥ `{settings['iou']}`."
 )
 
 raw_list = info.get("raw_det_list", [])
@@ -355,8 +339,8 @@ if raw_list:
 st.markdown("## Step 6 — Scheme reconstruction")
 st.markdown(
     f"Each detection is redrawn as its matching crochet symbol in pure "
-    f"black. Icon size follows the detection's own OBB; line thickness "
-    f"is **`linewidth_for_count({len(detections)}) = "
+    f"black. Icon size follows the detection's own OBB; line thickness is "
+    f"**`linewidth_for_count({len(detections)}) = "
     f"{linewidth_for_count(len(detections)):.2f}`** points (thicker for "
     "sparse images, thinner for dense ones). The output preserves the "
     "input's exact aspect ratio."

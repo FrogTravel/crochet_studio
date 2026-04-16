@@ -1,0 +1,14 @@
+numpy>=1.24
+opencv-python>=4.8
+matplotlib>=3.7
+Pillow>=10.0
+scikit-image>=0.21
+scikit-learn>=1.3
+joblib>=1.3
+ultralytics>=8.1
+streamlit>=1.30
+
+# Optional (enable as needed):
+# google-genai>=1.0   # for Gemini image generation
+# mcp>=0.1            # for the CrochetDesigner MCP server
+gradio_client>=1.0     # for Hunyuan3D image-to-3D mesh generation

@@ -1,13 +1,15 @@
 """Public Streamlit interface for the crochet scheme generator.
 
 Minimal, user-facing flow:
-  1. Generate with Gemini from a text prompt, or upload an image.
-  2. Click "Analyze stitches" — adaptive tiled YOLOv8n OBB inference.
-  3. Get a black-line reconstructed scheme at the input's aspect ratio
-     and a JSON export of all detections.
 
-All the heavy lifting lives in ``pipeline/ui.py`` so the admin demo page
-(`pages/1_Admin_Demo.py`) can reuse it.
+1. Generate with Gemini from a text prompt, or upload an image.
+2. Click "Analyze stitches" — adaptive tiled YOLOv8n OBB inference.
+3. Get a black-line reconstructed scheme at the input's aspect ratio
+   and a JSON export of all detections.
+
+All the heavy lifting lives in :mod:`crochet.streamlit_ui` and
+:mod:`crochet.detection` so the admin page (``pages/1_Admin_Demo.py``)
+can reuse it.
 """
 
 from __future__ import annotations
@@ -18,14 +20,13 @@ import time
 
 import streamlit as st
 
-from pipeline.ui import (
-    class_counts,
-    detections_to_json,
+from crochet.detection import predict_adaptive_with_progress
+from crochet.json_export import class_counts, detections_to_json
+from crochet.rendering import render_scheme_image
+from crochet.streamlit_ui import (
     ensure_input_state,
     input_source_block,
     load_crochet_model,
-    predict_adaptive_with_progress,
-    render_scheme_image,
     sidebar_inference_controls,
 )
 

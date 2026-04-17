@@ -1,9 +1,0 @@
-# --- Reusable stitch definitions -------------------------------
-DEF: shell = dc,4dc@[@]
-COLOR: rgb(60,90,160)
-BACKGROUND: white
-# --- Foundation chain ------------------------------------------
-13ch, turn
-ch, sc.B, 2sk, shell, 2sk, sc, 2sk, shell, 2sk, sc.A, turn
-3ch, 2dc@A, sk, sc, 2sk, shell, 2sk, sc, 2sk, 3dc@B, turn
-ch, sc.B1, 2sk, shell, 2sk, sc, 2sk, shell, 2sk, sc.A1

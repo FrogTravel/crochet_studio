@@ -1,4 +1,4 @@
-# Crochet
+# WIP! Crochet Studio
 
 Crochet stitch detection and scheme reconstruction. Generate a crochet
 diagram with Gemini (or upload your own), detect every stitch with a

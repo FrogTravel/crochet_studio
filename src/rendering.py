@@ -25,58 +25,117 @@ from .config import (
 from .inference import Detection, TileInfo
 
 
+def compute_stroke_width(detections: Iterable[Detection],
+                         *,
+                         default: float = 1.6,
+                         min_lw: float = 0.4,
+                         max_lw: float = 2.6,
+                         scale: float = 0.04) -> float:
+    """Pick a matplotlib stroke width proportional to the median glyph.
+
+    The same image can hold anywhere from a handful of large stitches
+    (a single fan) to thousands of small ones (a tiled photograph).
+    A fixed ``linewidth=2`` looks crisp for the former and chunky-bordering-
+    on-illegible for the latter. This helper takes the *median* OBB short
+    axis (in original-image pixels) as a proxy for "how big does a stitch
+    look" and scales the stroke width linearly, with hard floor and ceiling
+    so the line never disappears or overwhelms a glyph.
+
+    Args:
+        detections: Iterable of :class:`Detection` objects produced for
+            the figure being drawn.
+        default: Fallback when ``detections`` is empty.
+        min_lw: Lower clamp, in matplotlib points.
+        max_lw: Upper clamp, in matplotlib points.
+        scale: Fraction of the median short axis used as the unclamped
+            stroke width. The default ``0.04`` maps a 50-pixel median
+            glyph to roughly 2pt, which matches the historical default.
+
+    Returns:
+        float: Stroke width in matplotlib points.
+    """
+    sizes: list[float] = []
+    for det in detections:
+        sa = float(np.linalg.norm(det.corners[0] - det.corners[1]))
+        sb = float(np.linalg.norm(det.corners[1] - det.corners[2]))
+        sizes.append(min(sa, sb))
+    if not sizes:
+        return default
+    median = float(np.median(sizes))
+    return float(max(min_lw, min(max_lw, median * scale)))
+
+
 def draw_svg_icon(ax: Any, label: str,
                   x: float, y: float,
                   w: float, h: float,
                   angle_deg: float,
-                  color: str) -> None:
-    """Draw a single stitch glyph on a matplotlib axis."""
+                  color: str,
+                  linewidth: float = 2.0) -> None:
+    """Draw a single stitch glyph on a matplotlib axis.
+
+    Args:
+        ax: A matplotlib ``Axes``.
+        label: Stitch class name.
+        x: Centre x in axis coordinates.
+        y: Centre y in axis coordinates.
+        w: Glyph width.
+        h: Glyph height.
+        angle_deg: Rotation in degrees, applied around the centre.
+        color: Hex stroke colour.
+        linewidth: Main stroke width in matplotlib points. Inner detail
+            strokes (slashes, fan rays) are drawn at 75% of this value.
+            Compute a sensible value once per figure with
+            :func:`compute_stroke_width`.
+    """
     t = transforms.Affine2D().rotate_deg_around(x, y, angle_deg) + ax.transData
     svg_type = CLASS_CONFIG.get(label, {}).get("svg_type", "cross")
+    lw_main = linewidth
+    lw_thin = max(0.3, linewidth * 0.75)
 
     if svg_type == "chain":
         ax.add_patch(patches.Ellipse((x, y), w * 0.8, h * 0.4,
-                                     fill=False, color=color, linewidth=2,
-                                     transform=t))
+                                     fill=False, color=color,
+                                     linewidth=lw_main, transform=t))
     elif svg_type == "tall_stitch" or svg_type == "fan":
-        ax.plot([x, x], [y - h / 2, y + h / 2], color=color, lw=2, transform=t)
+        ax.plot([x, x], [y - h / 2, y + h / 2],
+                color=color, lw=lw_main, transform=t)
         ax.plot([x - w / 3, x + w / 3], [y - h / 2, y - h / 2],
-                color=color, lw=2, transform=t)
+                color=color, lw=lw_main, transform=t)
         n_bars = TALL_STITCH_BARS.get(label, 0)
         if svg_type == "fan":
             ax.plot([x, x - w / 3], [y + h / 2, y - h / 2],
-                    color=color, lw=1.5, transform=t, alpha=0.6)
+                    color=color, lw=lw_thin, transform=t, alpha=0.6)
             ax.plot([x, x + w / 3], [y + h / 2, y - h / 2],
-                    color=color, lw=1.5, transform=t, alpha=0.6)
+                    color=color, lw=lw_thin, transform=t, alpha=0.6)
         elif n_bars == 1:
             ax.plot([x - w / 4, x + w / 4], [y - h / 8, y + h / 8],
-                    color=color, lw=1.5, transform=t)
+                    color=color, lw=lw_thin, transform=t)
         elif n_bars == 2:
             ax.plot([x - w / 4, x + w / 4], [y - h / 4, y - h / 12],
-                    color=color, lw=1.5, transform=t)
+                    color=color, lw=lw_thin, transform=t)
             ax.plot([x - w / 4, x + w / 4], [y + h / 12, y + h / 4],
-                    color=color, lw=1.5, transform=t)
+                    color=color, lw=lw_thin, transform=t)
         elif n_bars == 3:
             for y0, y1 in [(-h / 3, -h / 6), (-h / 12, h / 12), (h / 6, h / 3)]:
                 ax.plot([x - w / 4, x + w / 4], [y + y0, y + y1],
-                        color=color, lw=1.5, transform=t)
+                        color=color, lw=lw_thin, transform=t)
     elif svg_type == "enseble_chain":
         n = max(2, int(h / max(w * 0.5, 1)))
         oh = h / n
         for i in range(n):
             cy = y - h / 2 + oh * (i + 0.5)
             ax.add_patch(patches.Ellipse((x, cy), w * 0.6, oh * 0.7,
-                                         fill=False, color=color, linewidth=1.5,
-                                         transform=t))
+                                         fill=False, color=color,
+                                         linewidth=lw_thin, transform=t))
     elif svg_type == "noise":
         ax.add_patch(patches.Circle((x, y), min(w, h) * 0.3,
-                                    fill=False, color=color, linewidth=1.5,
-                                    transform=t))
+                                    fill=False, color=color,
+                                    linewidth=lw_thin, transform=t))
     else:  # "cross" (single) and any unknown
         ax.plot([x - w / 3, x + w / 3], [y - h / 3, y + h / 3],
-                color=color, lw=2, transform=t)
+                color=color, lw=lw_main, transform=t)
         ax.plot([x - w / 3, x + w / 3], [y + h / 3, y - h / 3],
-                color=color, lw=2, transform=t)
+                color=color, lw=lw_main, transform=t)
 
 
 def render_two_panel(image: np.ndarray,
@@ -87,6 +146,13 @@ def render_two_panel(image: np.ndarray,
     detections = list(detections)
     h, w = image.shape[:2]
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 10))
+
+    # One stroke width for the whole figure, derived from the median
+    # glyph short axis. The overlay polygons (left panel) get a slightly
+    # heavier stroke than the scheme glyphs (right panel) so the boxes
+    # stay visible on top of the photograph.
+    glyph_lw = compute_stroke_width(detections)
+    overlay_lw = max(0.6, glyph_lw * 1.1)
 
     ax1.imshow(cv.cvtColor(image, cv.COLOR_BGR2RGB))
     ax1.set_title("YOLO-OBB detections (adaptive tiling)")
@@ -100,7 +166,7 @@ def render_two_panel(image: np.ndarray,
         color = cfg["color"]
         abbr = cfg["abbr"]
         closed = np.vstack([det.corners, det.corners[0]])
-        ax1.plot(closed[:, 0], closed[:, 1], color=color, linewidth=2)
+        ax1.plot(closed[:, 0], closed[:, 1], color=color, linewidth=overlay_lw)
         ax1.text(det.corners[0, 0], det.corners[0, 1] - 5, abbr,
                  color="white", fontsize=8, fontweight="bold",
                  bbox=dict(facecolor=color, edgecolor="none", alpha=0.7))
@@ -110,7 +176,7 @@ def render_two_panel(image: np.ndarray,
         angle  = float(np.degrees(np.arctan2(det.corners[1, 1] - det.corners[0, 1],
                                              det.corners[1, 0] - det.corners[0, 0])))
         draw_svg_icon(ax2, det.cls_name, centre[0], centre[1],
-                      width, height, angle, color)
+                      width, height, angle, color, linewidth=glyph_lw)
 
     ax1.axis("off")
     ax2.axis("off")
@@ -129,6 +195,7 @@ def render_scheme(detections: Iterable[Detection],
     ax.set_facecolor("white")
     ax.set_xlim(0, width)
     ax.set_ylim(height, 0)
+    glyph_lw = compute_stroke_width(detections)
     for det in detections:
         centre = det.corners.mean(axis=0)
         w_ = float(np.linalg.norm(det.corners[0] - det.corners[1]))
@@ -136,7 +203,7 @@ def render_scheme(detections: Iterable[Detection],
         angle = float(np.degrees(np.arctan2(det.corners[1, 1] - det.corners[0, 1],
                                             det.corners[1, 0] - det.corners[0, 0])))
         draw_svg_icon(ax, det.cls_name, centre[0], centre[1],
-                      w_, h_, angle, SCHEME_COLOR)
+                      w_, h_, angle, SCHEME_COLOR, linewidth=glyph_lw)
     ax.axis("off")
     plt.tight_layout(pad=0)
 
@@ -343,6 +410,13 @@ def render_reassembly(image: np.ndarray,
     axL.imshow(rgb)
     axR.imshow(rgb)
 
+    # Adapt overlay weight to median glyph size so dense, small-stitch
+    # photos get readable hairlines and sparse, large-stitch ones get
+    # solid outlines.
+    overlay_lw = compute_stroke_width(final_detections,
+                                      default=1.4, min_lw=0.4, max_lw=2.0,
+                                      scale=0.035)
+
     # Left: per-tile raw detections, colour-coded by tile index.
     for i, info in enumerate(tiles_info):
         color = _tile_color(i, len(tiles_info))
@@ -354,7 +428,8 @@ def render_reassembly(image: np.ndarray,
         ))
         for det in info.detections:
             closed = np.vstack([det.corners, det.corners[0]])
-            axL.plot(closed[:, 0], closed[:, 1], color=color, linewidth=1.5)
+            axL.plot(closed[:, 0], closed[:, 1],
+                     color=color, linewidth=overlay_lw)
 
     axL.set_title(
         f"Before NMS — {n_pre} raw detections, colour-coded by tile",
@@ -367,7 +442,7 @@ def render_reassembly(image: np.ndarray,
         cfg = CLASS_CONFIG.get(det.cls_name, {"color": DEFAULT_COLOR})
         closed = np.vstack([det.corners, det.corners[0]])
         axR.plot(closed[:, 0], closed[:, 1],
-                 color=cfg["color"], linewidth=1.8)
+                 color=cfg["color"], linewidth=overlay_lw * 1.15)
 
     removed = max(0, n_pre - n_post)
     axR.set_title(

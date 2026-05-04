@@ -75,11 +75,57 @@ def sidebar_controls() -> dict[str, Any]:
     }
 
 
+def _set_input_image(image_bytes: bytes, source: str) -> None:
+    """Stash the current input image in session state.
+
+    Anything routed through here becomes the source of truth for the
+    rest of the page on subsequent reruns. Setting a new input also
+    invalidates any analysis result computed against the previous one.
+
+    Args:
+        image_bytes: Raw image bytes (PNG / JPG).
+        source: ``"gemini"`` or ``"upload"`` — used for telemetry and
+            to remember which tab last produced the active input.
+    """
+    st.session_state["input_image_bytes"] = image_bytes
+    st.session_state["input_source"] = source
+    st.session_state.pop("analysis_result", None)
+
+
+def _on_upload_change() -> None:
+    """File-uploader callback: keep session state in sync with the widget.
+
+    Streamlit fires ``on_change`` only when the *user* actually selects
+    or clears a file, which is exactly when we want to update the input.
+    Plain ``if upload is not None`` inside the render function would also
+    fire on unrelated reruns and could clobber a freshly-generated image.
+    """
+    upload = st.session_state.get("upload_widget")
+    if upload is None:
+        # User cleared the file — drop the upload-sourced state, but
+        # leave gemini-sourced state alone.
+        if st.session_state.get("input_source") == "upload":
+            st.session_state.pop("input_image_bytes", None)
+            st.session_state.pop("input_source", None)
+            st.session_state.pop("analysis_result", None)
+        return
+    _set_input_image(upload.getvalue(), "upload")
+
+
 def input_block() -> tuple[bytes | None, str | None]:
-    """Render the "Generate with Gemini *or* upload" input widget."""
+    """Render the "Generate with Gemini *or* upload" input widget.
+
+    The widget never returns "transient" bytes: the active input lives
+    in ``st.session_state`` so it survives the rerun caused by clicking
+    "Analyze stitches". Without this persistence the generated image
+    would appear to vanish on click, since ``st.button("Generate")``
+    only returns ``True`` on the single rerun caused by *its* click.
+
+    Returns:
+        tuple[bytes | None, str | None]: ``(image_bytes, source)`` where
+        ``source`` is ``"gemini"``, ``"upload"`` or ``None``.
+    """
     tab_gen, tab_up = st.tabs(["Generate with Gemini", "Upload image"])
-    image_bytes: bytes | None = None
-    source: str | None = None
 
     with tab_gen:
         prompt = st.text_area("Prompt", value=DEFAULT_PROMPT, height=80)
@@ -89,25 +135,27 @@ def input_block() -> tuple[bytes | None, str | None]:
                                                   delete=False) as tmp:
                     out_path = Path(tmp.name)
                 generate_image(prompt=prompt, output_path=out_path)
-                image_bytes = out_path.read_bytes()
-                source = "gemini"
+                _set_input_image(out_path.read_bytes(), "gemini")
                 st.success("Image generated.")
             except Exception as exc:
                 st.error(f"Gemini error: {exc}")
 
     with tab_up:
-        upload = st.file_uploader("Upload PNG / JPG",
-                                  type=["png", "jpg", "jpeg"])
-        if upload is not None:
-            # Use ``getvalue()`` not ``read()``: ``read()`` advances the
-            # cursor and returns ``b""`` on subsequent reruns, which would
-            # silently break downstream inference after any widget click.
-            image_bytes = upload.getvalue()
-            source = "upload"
+        st.file_uploader(
+            "Upload PNG / JPG",
+            type=["png", "jpg", "jpeg"],
+            key="upload_widget",
+            on_change=_on_upload_change,
+        )
+
+    image_bytes: bytes | None = st.session_state.get("input_image_bytes")
+    source: str | None = st.session_state.get("input_source")
 
     if image_bytes:
-        st.image(image_bytes, caption="Input image", use_container_width=True)
-    return (image_bytes if image_bytes else None), source
+        st.image(image_bytes,
+                 caption=f"Input image ({source})",
+                 use_container_width=True)
+    return image_bytes, source
 
 
 def render_tiling_inspector(image: np.ndarray,

@@ -19,7 +19,6 @@ from __future__ import annotations
 
 import io
 import json
-import os
 import tempfile
 from pathlib import Path
 from typing import Any
@@ -40,6 +39,26 @@ from src.rendering import (
     render_reassembly, render_scheme, render_tile_grid, render_tiles_panel,
     render_two_panel,
 )
+
+
+EXAMPLES_DIR: Path = Path(__file__).resolve().parent / "data" / "examples"
+"""Folder scanned by :func:`input_block` for the "Example image" tab.
+
+Drop ``.png`` / ``.jpg`` files in here and they appear as a thumbnail
+gallery — no other registration step needed.
+"""
+
+EXAMPLE_GALLERY_COLS: int = 3
+"""How many thumbnails per row in the example-image gallery."""
+
+EXAMPLE_THUMBNAIL_SIZE: int = 400
+"""Side length, in pixels, of each square example thumbnail.
+
+Thumbnails are rendered with ``use_container_width=True``, so the actual
+on-screen size scales with the column width — but because every
+thumbnail has the same 1:1 aspect ratio, they all end up the same
+height regardless of the source image's shape.
+"""
 
 
 def configure_page() -> None:
@@ -112,8 +131,95 @@ def _on_upload_change() -> None:
     _set_input_image(upload.getvalue(), "upload")
 
 
+def _list_example_images() -> list[Path]:
+    """Return image files under :data:`EXAMPLES_DIR`, sorted by name.
+
+    Both ``.png`` and ``.jpg`` / ``.jpeg`` are picked up. The function is
+    side-effect-free so it is safe to call on every rerun; if the folder
+    is missing it returns an empty list.
+
+    Returns:
+        list[Path]: Discovered example-image paths, alphabetised.
+    """
+    if not EXAMPLES_DIR.is_dir():
+        return []
+    return sorted(
+        p for p in EXAMPLES_DIR.iterdir()
+        if p.suffix.lower() in {".png", ".jpg", ".jpeg"}
+    )
+
+
+@st.cache_data(show_spinner=False)
+def _square_thumbnail(path_str: str, mtime: float,
+                      size: int = EXAMPLE_THUMBNAIL_SIZE) -> bytes:
+    """Center-crop an example image to a square and return PNG bytes.
+
+    Crochet charts come in wildly different aspect ratios — squares,
+    tall portraits, wide landscapes. Without normalisation, the gallery
+    row would have a ragged bottom edge. This helper center-crops each
+    image to a 1:1 square at a fixed pixel size so every thumbnail
+    renders at exactly the same height once Streamlit scales it to the
+    column width.
+
+    Cached on ``(path_str, mtime)`` so the crop is computed once per
+    file and reused on every rerun. Including ``mtime`` invalidates the
+    cache automatically if a file is replaced on disk.
+
+    Args:
+        path_str: Absolute path of the source image, as a string.
+        mtime: ``Path.stat().st_mtime`` — only used as a cache key.
+        size: Side length of the resulting square, in pixels.
+
+    Returns:
+        bytes: PNG-encoded thumbnail.
+    """
+    del mtime  # only used for cache invalidation
+    img = Image.open(path_str).convert("RGB")
+    w, h = img.size
+    side = min(w, h)
+    left = (w - side) // 2
+    top = (h - side) // 2
+    img = img.crop((left, top, left + side, top + side))
+    img = img.resize((size, size), Image.LANCZOS)
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def _render_examples_tab() -> None:
+    """Render the example-image gallery inside the active Streamlit tab.
+
+    Each thumbnail gets a "Use this" button that routes the file's bytes
+    through :func:`_set_input_image` so the rest of the page treats it
+    exactly like an uploaded image. Empty folder yields a friendly hint
+    instead of an error. Thumbnails are forced to a 1:1 aspect ratio via
+    :func:`_square_thumbnail` so the row never looks ragged.
+    """
+    examples = _list_example_images()
+    if not examples:
+        st.info(
+            f"No example images found in `{EXAMPLES_DIR.relative_to(Path.cwd())}`. "
+            "Drop a few `.png` or `.jpg` files there to populate this gallery."
+        )
+        return
+
+    st.caption(
+        "Pick one of the bundled crochet charts to skip generation and "
+        "uploading."
+    )
+    for row_start in range(0, len(examples), EXAMPLE_GALLERY_COLS):
+        row = examples[row_start:row_start + EXAMPLE_GALLERY_COLS]
+        cols = st.columns(EXAMPLE_GALLERY_COLS)
+        for col, path in zip(cols, row):
+            with col:
+                thumb = _square_thumbnail(str(path), path.stat().st_mtime)
+                st.image(thumb, use_container_width=True)
+                if st.button(f"Use {path.name}", key=f"example_{path.name}"):
+                    _set_input_image(path.read_bytes(), "example")
+
+
 def input_block() -> tuple[bytes | None, str | None]:
-    """Render the "Generate with Gemini *or* upload" input widget.
+    """Render the input widget with three sources: examples, Gemini, upload.
 
     The widget never returns "transient" bytes: the active input lives
     in ``st.session_state`` so it survives the rerun caused by clicking
@@ -123,22 +229,52 @@ def input_block() -> tuple[bytes | None, str | None]:
 
     Returns:
         tuple[bytes | None, str | None]: ``(image_bytes, source)`` where
-        ``source`` is ``"gemini"``, ``"upload"`` or ``None``.
+        ``source`` is ``"gemini"``, ``"upload"``, ``"example"``, or ``None``.
     """
-    tab_gen, tab_up = st.tabs(["Generate with Gemini", "Upload image"])
+    tab_gen, tab_up, tab_examples = st.tabs([
+        "Generate with Gemini",
+        "Upload image",
+        "Example image",
+    ])
 
     with tab_gen:
+        # The API key is *user-supplied* on purpose: the deployed app
+        # must not call Gemini on the developer's billing account, and
+        # storing keys server-side via .env would do exactly that. The
+        # widget persists the value in session state for the duration
+        # of the session via its ``key=`` parameter — no on-disk write.
+        api_key = st.text_input(
+            "Your Google Gemini API key",
+            type="password",
+            key="gemini_api_key",
+            placeholder="Paste your Google AI Studio API key",
+            help=(
+                "Get one for free at https://aistudio.google.com/apikey. "
+                "The key stays in this browser session — it is never "
+                "logged or stored on the server."
+            ),
+        )
         prompt = st.text_area("Prompt", value=DEFAULT_PROMPT, height=80)
         if st.button("Generate", key="generate"):
-            try:
-                with tempfile.NamedTemporaryFile(suffix=".png",
-                                                  delete=False) as tmp:
-                    out_path = Path(tmp.name)
-                generate_image(prompt=prompt, output_path=out_path)
-                _set_input_image(out_path.read_bytes(), "gemini")
-                st.success("Image generated.")
-            except Exception as exc:
-                st.error(f"Gemini error: {exc}")
+            if not api_key:
+                st.error(
+                    "Please paste your Gemini API key above before "
+                    "clicking Generate."
+                )
+            else:
+                try:
+                    with tempfile.NamedTemporaryFile(suffix=".png",
+                                                      delete=False) as tmp:
+                        out_path = Path(tmp.name)
+                    generate_image(
+                        prompt=prompt,
+                        output_path=out_path,
+                        api_key=api_key,
+                    )
+                    _set_input_image(out_path.read_bytes(), "gemini")
+                    st.success("Image generated.")
+                except Exception as exc:
+                    st.error(f"Gemini error: {exc}")
 
     with tab_up:
         st.file_uploader(
@@ -147,6 +283,9 @@ def input_block() -> tuple[bytes | None, str | None]:
             key="upload_widget",
             on_change=_on_upload_change,
         )
+
+    with tab_examples:
+        _render_examples_tab()
 
     image_bytes: bytes | None = st.session_state.get("input_image_bytes")
     source: str | None = st.session_state.get("input_source")

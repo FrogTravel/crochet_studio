@@ -1,5 +1,25 @@
+# Secrets
 .env
+
+# Editor / OS
+.vscode/
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Notebook scratch
+.ipynb_checkpoints/
+
+# Auto-created at runtime
+models/
 yolov8n-obb.pt
-mobilenet_model.pt
-mobilenet_le.joblib
-.vscode
+
+# Heavy data — keep folder structure but ignore contents
+data/synthetic/
+data/big_tiles/

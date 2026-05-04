@@ -60,8 +60,7 @@ adaptive tiled YOLOv8n-OBB detection → reconstructed scheme + JSON.
 
 **3D amigurumi pipeline** (exploratory): Gemini → reference image →
 Hunyuan3D mesh → horizontal slicing → perimeter-per-row → amigurumi
-instructions. See
-[The 3D amigurumi pipeline](#the-3d-amigurumi-pipeline) below.
+instructions.
 
 A small zero-shot text classifier routes user prompts to the
 appropriate pipeline.
@@ -269,3 +268,6 @@ streamlit run app.py
 comparison for handwritten and printed music scores.* Document
 Analysis Systems (DAS 2024), Athens, Greece, pp. 327–343.
 ⟨hal-04268139v2⟩
+
+## Contact 
+ekaterina.alex.levchenko@gmail.com
